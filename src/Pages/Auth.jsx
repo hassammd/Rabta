@@ -3,7 +3,7 @@ import SignUp from "../Components/SignUp";
 import SignIn from "../Components/SignIn";
 
 const Auth = () => {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
 
   return (
     <>

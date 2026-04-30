@@ -4,7 +4,7 @@ import { auth } from "../../Firebase";
 
 const initialState = {
   user: null,
-  loading: false,
+  loading: true,
   error: null,
 };
 
@@ -31,7 +31,19 @@ const userSignIn = createAsyncThunk(
 const SignInSlice = createSlice({
   name: "signin",
   initialState,
-  reducers: {},
+  reducers: {
+    setUser: (state, action) => {
+      state.user = action.payload;
+      state.loading = false;
+    },
+    setLoading: (state, action) => {
+      state.loading = action.payload;
+    },
+    setLogout: (state, action) => {
+      state.user = null;
+      state.loading = false;
+    },
+  },
   extraReducers: (builders) => {
     builders.addCase(userSignIn.pending, (state, action) => {
       state.loading = true;
@@ -48,4 +60,5 @@ const SignInSlice = createSlice({
 });
 
 export { userSignIn };
+export const { setUser, setLogout, setLoading } = SignInSlice.actions;
 export default SignInSlice.reducer;
