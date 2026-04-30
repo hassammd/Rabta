@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { signUpUser } from "../Redux/SignUpSlice";
+import { last } from "firebase/firestore/pipelines";
 
 const SignUp = ({ setIsLogin }) => {
   const [firsName, setFirstName] = useState("");
@@ -12,6 +15,8 @@ const SignUp = ({ setIsLogin }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
+
+  const dispatch = useDispatch();
 
   console.log(errors);
 
@@ -33,17 +38,23 @@ const SignUp = ({ setIsLogin }) => {
     if (!year.trim()) {
       newError.year = "Select your year";
     }
-    if (!gender.trim()) {
+    if (!gender) {
       newError.gender = "select your gender";
     }
+    const emailRegexm = /^\S+@\S+\.\S+$/;
     if (!email.trim()) {
       newError.email = "Enter your Email";
+    } else if (!emailRegexm.test(email)) {
+      newError.email = "Enter valid email";
     }
     if (!phone.trim()) {
       newError.phone = "Enter your phone";
     }
     if (!password.trim()) {
       newError.password = "Enter your password";
+    }
+    if (password.length < 6) {
+      newError.password = "Password must be at least 6 characters";
     }
     if (!confirmPassword.trim()) {
       newError.confirmPassword = "Enter your confirmPassword";
@@ -54,8 +65,8 @@ const SignUp = ({ setIsLogin }) => {
     if (Object.keys(newError).length > 0) {
       setErrors(newError);
     } else {
-      setFirstName("");
-      setLastName("");
+      dispatch(signUpUser({ email, password }));
+      setErrors({});
     }
   };
 
@@ -65,7 +76,11 @@ const SignUp = ({ setIsLogin }) => {
         <h1 className="font-bold text-center">Rabta</h1>
         {/* Sign up  */}
         <div className="border border-gray-100 bg-white shadow-2xl lg:p-18 p-8 flex flex-col gap-3.5">
-          <form onSubmit={SubmitHandler} action="" className="">
+          <form
+            onSubmit={SubmitHandler}
+            action=""
+            className="flex flex-col gap-2"
+          >
             <div className="flex gap-3">
               <div className="flex flex-col gap-1 w-1/2">
                 <label htmlFor="" className="text-sm">
@@ -74,6 +89,7 @@ const SignUp = ({ setIsLogin }) => {
                 <input
                   className={` lg:p-2 p-1 border outline-0 ${errors.firstName ? "border-error" : "border-gray-200"}  rounded-lg `}
                   type="text"
+                  value={firsName}
                   placeholder=""
                   onChange={(e) => setFirstName(e.target.value)}
                 />
@@ -86,6 +102,7 @@ const SignUp = ({ setIsLogin }) => {
                 <input
                   className={`lg:p-2 p-1 border outline-0 ${errors?.lastName ? "border-error" : "border-gray-200"}  rounded-lg `}
                   type="text"
+                  value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                 />
                 <p className="text-sm text-red-600">{errors.lastName}</p>
@@ -102,12 +119,13 @@ const SignUp = ({ setIsLogin }) => {
                     className={`w-full lg:text-[16px] text-sm lg:p-2 p-1 border outline-0 ${errors.day ? "border-error" : "border-gray-200"} rounded-lg `}
                     name=""
                     id=""
+                    value={day}
                     onChange={(e) => setDay(e.target.value)}
                   >
                     <option value="">Day</option>
-                    <option value="">1</option>
-                    <option value="">3</option>
-                    <option value="">4</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">4</option>
                   </select>
                   <p className="text-sm text-red-600">{errors.day}</p>
                 </div>
@@ -119,9 +137,9 @@ const SignUp = ({ setIsLogin }) => {
                     onChange={(e) => setMonth(e.target.value)}
                   >
                     <option value="">Month</option>
-                    <option value="">1</option>
-                    <option value="">3</option>
-                    <option value="">4</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
                   </select>
                   <p className="text-sm text-red-600">{errors.month}</p>
                 </div>
@@ -133,9 +151,9 @@ const SignUp = ({ setIsLogin }) => {
                     onChange={(e) => setYear(e.target.value)}
                   >
                     <option value="">Year</option>
-                    <option value="">2020</option>
-                    <option value="">2021</option>
-                    <option value="">2022</option>
+                    <option value="2020">2020</option>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
                   </select>
                   <p className="text-sm text-red-600">{errors.year}</p>
                 </div>
@@ -151,9 +169,9 @@ const SignUp = ({ setIsLogin }) => {
                 id=""
                 onChange={(e) => setGender(e.target.value)}
               >
-                <option value="">Male</option>
-                <option value="">Female</option>
-                <option value="">Cusotm</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="custom">Cusotm</option>
               </select>
               <p className="text-sm text-red-600">{errors.gender}</p>
             </div>
@@ -164,6 +182,7 @@ const SignUp = ({ setIsLogin }) => {
               <input
                 className={`lg:p-2 p-1 border outline-0 ${errors.email ? "border-error" : "border-gray-200"}  rounded-lg `}
                 type="text"
+                value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
               <p className="text-sm text-red-600">{errors.email}</p>
@@ -174,7 +193,8 @@ const SignUp = ({ setIsLogin }) => {
               </label>
               <input
                 className={`lg:p-2 p-1 border outline-0 ${errors.phone ? "border-error" : "border-gray-200"} rounded-lg `}
-                type="text"
+                type="number"
+                value={phone}
                 onChange={(e) => setPhone(e.target.value)}
               />
               <p className="text-sm text-red-600">{errors.phone}</p>
@@ -187,6 +207,7 @@ const SignUp = ({ setIsLogin }) => {
                 <input
                   className={`lg:p-2 p-1 border outline-0 ${errors.password ? "border-error" : "border-gray-200"}  rounded-lg `}
                   type="text"
+                  value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
                 <p className="text-sm text-red-600">{errors.password}</p>
@@ -198,6 +219,7 @@ const SignUp = ({ setIsLogin }) => {
                 <input
                   className={`lg:p-2 p-1 border outline-0 ${errors.confirmPassword ? "border-error" : "border-gray-200"}  rounded-lg `}
                   type="text"
+                  value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 />
                 <p className="text-sm text-red-600">{errors.confirmPassword}</p>

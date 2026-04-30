@@ -1,13 +1,10 @@
 @import "tailwindcss";
+@plugin "../node_modules/daisyui/index.js";
 @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap");
 
-.container {
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 0 15px;
-}
-
 @theme {
+  /* font */
+  --font-rabta: "Plus Jakarta Sans", sans-serif;
   /* custom colors */
   --color-primary: #3b82f6;
   --color-secondary: #6366f1;
@@ -16,9 +13,10 @@
   --color-error: #ff3333;
 }
 body {
-  --font-rabta: "Plus Jakarta Sans", sans-serif;
+  font-family: var(--font-rabta);
   background-color: var(--color-bg);
   color: var(--color-text);
+  height: 100vh;
 }
 @layer base {
   h1 {
@@ -30,4 +28,9 @@ body {
   h3 {
     font-size: 22px;
   }
+}
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 15px;
 }
