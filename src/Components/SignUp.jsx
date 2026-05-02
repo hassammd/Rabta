@@ -2,9 +2,10 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { signUpUser } from "../Redux/SignUpSlice";
 import { last } from "firebase/firestore/pipelines";
+import { useNavigate } from "react-router";
 
 const SignUp = ({ setIsLogin }) => {
-  const [firsName, setFirstName] = useState("");
+  const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [day, setDay] = useState("");
   const [month, setMonth] = useState("");
@@ -17,13 +18,14 @@ const SignUp = ({ setIsLogin }) => {
   const [errors, setErrors] = useState({});
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   console.log(errors);
 
   const SubmitHandler = (e) => {
     e.preventDefault();
     let newError = {};
-    if (!firsName.trim()) {
+    if (!firstName.trim()) {
       newError.firstName = "Enter first name";
     }
     if (!lastName.trim()) {
@@ -65,8 +67,9 @@ const SignUp = ({ setIsLogin }) => {
     if (Object.keys(newError).length > 0) {
       setErrors(newError);
     } else {
-      dispatch(signUpUser({ email, password }));
+      dispatch(signUpUser({ email, password, firstName, lastName }));
       setErrors({});
+      navigate("/");
     }
   };
 
@@ -89,7 +92,7 @@ const SignUp = ({ setIsLogin }) => {
                 <input
                   className={` lg:p-2 p-1 border outline-0 ${errors.firstName ? "border-error" : "border-gray-200"}  rounded-lg `}
                   type="text"
-                  value={firsName}
+                  value={firstName}
                   placeholder=""
                   onChange={(e) => setFirstName(e.target.value)}
                 />
@@ -136,7 +139,9 @@ const SignUp = ({ setIsLogin }) => {
                     id=""
                     onChange={(e) => setMonth(e.target.value)}
                   >
-                    <option value="">Month</option>
+                    <option hidden value="">
+                      Month
+                    </option>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -150,7 +155,9 @@ const SignUp = ({ setIsLogin }) => {
                     id=""
                     onChange={(e) => setYear(e.target.value)}
                   >
-                    <option value="">Year</option>
+                    <option hidden value="">
+                      Year
+                    </option>
                     <option value="2020">2020</option>
                     <option value="2021">2021</option>
                     <option value="2022">2022</option>
@@ -169,7 +176,10 @@ const SignUp = ({ setIsLogin }) => {
                 id=""
                 onChange={(e) => setGender(e.target.value)}
               >
-                <option value="Male">Male</option>
+                <option hidden value="Male">
+                  Gender
+                </option>
+                <option value="Female">Male</option>
                 <option value="Female">Female</option>
                 <option value="custom">Cusotm</option>
               </select>

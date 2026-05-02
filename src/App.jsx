@@ -10,6 +10,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../Firebase";
 import { useDispatch } from "react-redux";
 import { setLoading, setUser } from "./Redux/SignInSlice";
+import Profile from "./Pages/Profile";
 
 function App() {
   const dispatch = useDispatch();
@@ -31,6 +32,7 @@ function App() {
         <Route element={<ProtectedRoutes />}>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
+            <Route path="/profile" element={<Profile />} />
           </Route>
         </Route>
 
