@@ -11,6 +11,7 @@ import { auth } from "../Firebase";
 import { useDispatch } from "react-redux";
 import { setLoading, setUser } from "./Redux/SignInSlice";
 import Profile from "./Pages/Profile";
+import Follow from "./Pages/Follow";
 
 function App() {
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/follow" element={<Follow />} />
           </Route>
         </Route>
 

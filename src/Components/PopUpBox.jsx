@@ -2,18 +2,19 @@ import { useEffect, useState } from "react";
 import { db } from "../../Firebase";
 import { doc, updateDoc } from "firebase/firestore";
 
-const PopUpBox = ({ setIsBoxActive, userData }) => {
-  console.log("this is user Data from popup:", userData);
+const PopUpBox = ({ setIsBoxActive, currentUser }) => {
+  console.log("this is user Data from popup:", currentUser);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [bio, setBio] = useState("");
   const [loading, setLoading] = useState(false);
 
+  console.log("this is current user");
   useEffect(() => {
-    if (userData) {
-      setFirstName(userData.firstName);
-      setLastName(userData.lastName);
-      setBio(userData.bio);
+    if (currentUser) {
+      setFirstName(currentUser.firstName);
+      setLastName(currentUser.lastName);
+      setBio(currentUser.bio);
     }
   }, [useState]);
   const handleOverlayClick = (e) => {
@@ -26,7 +27,7 @@ const PopUpBox = ({ setIsBoxActive, userData }) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const userRef = doc(db, "users", userData.uid);
+      const userRef = doc(db, "users", currentUser.uid);
       await updateDoc(userRef, {
         firstName: firstName,
         lastName: lastName,

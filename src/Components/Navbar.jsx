@@ -1,6 +1,6 @@
 import { signOut } from "firebase/auth";
 import { auth, db } from "../../Firebase";
-import { Link, useNavigate } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import { setLogout } from "../Redux/SignInSlice";
 import { IoHomeOutline } from "react-icons/io5";
@@ -54,7 +54,7 @@ const Navbar = () => {
     {
       name: "Follow",
       icons: <FiUserPlus />,
-      url: "",
+      url: "/follow",
     },
     {
       name: "Profile",
@@ -74,12 +74,12 @@ const Navbar = () => {
               {nav.map((items) => {
                 return (
                   <li>
-                    <Link
+                    <NavLink
                       to={items.url}
-                      className="flex items-center gap-5 text-xl"
+                      className={`flex items-center gap-5 text-xl`}
                     >
                       <span>{items.icons}</span> {items.name}
-                    </Link>
+                    </NavLink>
                   </li>
                 );
               })}
@@ -106,7 +106,7 @@ const Navbar = () => {
               {/* Name and Username */}
               <div className="flex flex-col leading-tight">
                 <h3 className="font-bold text-sm lg:text-base truncate max-w-[100px] lg:max-w-[150px]">
-                  {currentUser?.name || "User Name"}
+                  {currentUser?.firstName || "User Name"}
                 </h3>
                 <span className="text-xs text-gray-500 truncate">
                   {currentUser?.userName || "username"}

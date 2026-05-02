@@ -5,13 +5,14 @@ import { auth, db } from "../../Firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { LuCalendarDays } from "react-icons/lu";
 import PopUpBox from "../Components/PopUpBox";
+import CreatePost from "../Components/CreatePost";
 const Profile = () => {
-  const [userData, setUserData] = useState({});
+  const [currentUser, setcurrentUser] = useState({});
   const [loading, setLoading] = useState(true);
   const [isBoxActive, setIsBoxActive] = useState(false);
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchcurrentUser = async () => {
       try {
         //current user
         const currentUser = auth.currentUser;
@@ -19,7 +20,7 @@ const Profile = () => {
         const docRef = doc(db, "users", currentUser.uid);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          setUserData(docSnap.data());
+          setcurrentUser(docSnap.data());
         }
       } catch (err) {
         console.log(err);
@@ -27,11 +28,11 @@ const Profile = () => {
         setLoading(false);
       }
     };
-    fetchUserData();
-  }, [userData]);
+    fetchcurrentUser();
+  }, [currentUser]);
   return (
     <>
-      <div className="flex flex-col border border-gray-200  h-screen rounded-sm">
+      <div className="flex flex-col   h-screen rounded-sm">
         {/* banner */}
         <div>
           <div className="relative flex items-center justify-center bg-gray-300 h-[250px]">
@@ -51,11 +52,11 @@ const Profile = () => {
             <div>
               <div c>
                 <h3 className="font-bold">
-                  {`${userData.firstName} ${userData.lastName}`}
+                  {`${currentUser.firstName} ${currentUser.lastName}`}
                 </h3>
               </div>
               <span className="text-sm">
-                {userData.userName?.toLowerCase()}
+                {currentUser.userName?.toLowerCase()}
               </span>
             </div>
             <button
@@ -65,7 +66,10 @@ const Profile = () => {
               Set up profile
             </button>
             {isBoxActive ? (
-              <PopUpBox userData={userData} setIsBoxActive={setIsBoxActive} />
+              <PopUpBox
+                currentUser={currentUser}
+                setIsBoxActive={setIsBoxActive}
+              />
             ) : null}
           </div>
 
@@ -73,7 +77,7 @@ const Profile = () => {
             <div>
               <div className="flex items-center gap-2">
                 <LuCalendarDays /> <span>Joined</span>
-                <span className="text-sm">{userData.createAt}</span>
+                <span className="text-sm">{currentUser.createAt}</span>
               </div>
             </div>
             <div className="flex gap-3">
@@ -82,6 +86,7 @@ const Profile = () => {
             </div>
           </div>
         </div>
+        <CreatePost currentUser={currentUser} />
       </div>
     </>
   );
