@@ -3,13 +3,25 @@ import { CiImageOn } from "react-icons/ci";
 import { FaUser } from "react-icons/fa6";
 import { FiImage } from "react-icons/fi";
 import { MdOutlineGifBox } from "react-icons/md";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  orderBy,
+  query,
+  serverTimestamp,
+  where,
+} from "firebase/firestore";
 import { db } from "../../Firebase";
 
 const CreatePost = ({ currentUser }) => {
   const [postText, setPostText] = useState("");
+  const [currentUserPost, setCurrentUserPosts] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  //add post handler
   const handlePost = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -32,6 +44,35 @@ const CreatePost = ({ currentUser }) => {
       setLoading(false);
     }
   };
+
+  //get post handler
+
+  useEffect(() => {
+    const fetchCurrentUserPosts = async () => {
+      try {
+        const postsRef = collection(db, "posts");
+        const q = query(
+          postsRef,
+          where("uid", "==", currentUser.uid),
+          orderBy("createdAt", "desc"),
+        );
+        const postsSnapShot = await getDocs(q);
+
+        //extract data
+        const postsData = postsSnapShot.docs.map((doc) => {
+          return {
+            id: doc.id,
+            ...doc.data(),
+          };
+        });
+        setCurrentUserPosts(postsData);
+        console.log("postsssssssss", postsData);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchCurrentUserPosts();
+  }, [currentUser?.uid]);
 
   return (
     <>
@@ -70,6 +111,11 @@ const CreatePost = ({ currentUser }) => {
           </div>
           {loading ? "Posting..." : " "}
         </form>
+      </div>
+      <div>
+        {currentUserPost.map((items) => {
+          return <p>{items.text}</p>;
+        })}
       </div>
     </>
   );
