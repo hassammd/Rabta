@@ -28,21 +28,19 @@ const Layout = () => {
   return (
     <>
       <div className="container">
-        <div className="flex flex-row">
+        <div className="flex flex-row h-screen">
           {/* left side */}
-          <div className="py-10 px-4 w-[275px]">
+          <div className="sticky top-0 overflow-y-auto py-10 px-4 w-[275px]">
             <Navbar />
           </div>
 
           {/* center col */}
-          <div className="border border-gray-200 h-screen w-[60%]">
-            <div>
-              <Outlet />
-            </div>
+          <div className="border border-gray-200 overflow-y-auto h-screen w-[60%] no-scrollbar">
+            <Outlet />
           </div>
 
           {/* right side */}
-          <div className="flex flex-col gap-10 py-10 px-4 w-[350px]">
+          <div className="h-screen sticky top-0 flex flex-col gap-10 py-10 px-4 w-[350px]">
             {/* search */}
             <div>
               <label className="input">

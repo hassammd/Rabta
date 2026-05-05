@@ -15,9 +15,9 @@ const Profile = () => {
     const fetchcurrentUser = async () => {
       try {
         //current user
-        const currentUser = auth.currentUser;
+        const User = auth.currentUser;
 
-        const docRef = doc(db, "users", currentUser.uid);
+        const docRef = doc(db, "users", User.uid);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           setcurrentUser(docSnap.data());
@@ -32,11 +32,11 @@ const Profile = () => {
   }, [currentUser]);
   return (
     <>
-      <div className="flex flex-col   h-screen rounded-sm">
+      <div className="flex flex-col h-screen rounded-sm">
         {/* banner */}
         <div>
           <div className="relative flex items-center justify-center bg-gray-300 h-[250px]">
-            <h1 className="   text-9xl font-bold uppercase text-gray-100">
+            <h1 className="text-9xl font-bold uppercase text-gray-100">
               Banner
             </h1>
             <div className="flex items-end  gap-4 absolute -bottom-9 left-9">
@@ -52,7 +52,7 @@ const Profile = () => {
             <div>
               <div c>
                 <h3 className="font-bold">
-                  {`${currentUser.firstName} ${currentUser.lastName}`}
+                  {`${currentUser?.firstName} ${currentUser?.lastName}`}
                 </h3>
               </div>
               <span className="text-sm">

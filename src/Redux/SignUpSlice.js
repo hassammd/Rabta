@@ -25,7 +25,6 @@ const signUpUser = createAsyncThunk(
         uid: user.uid,
         firstName: firstName,
         lastName: lastName,
-
         userName: `@${firstName}`,
         email: user.email,
         bio: "Hi Iam using Rabta",

@@ -64,7 +64,7 @@ const Navbar = () => {
   ];
   return (
     <>
-      <div className="flex flex-col justify-between h-full gap-7">
+      <div className="sticky top-0 flex flex-col justify-between h-full gap-7">
         <div className="flex flex-col gap-20">
           <div>
             <Link className="text-3xl font-black">Rabta</Link>
