@@ -45,7 +45,7 @@ const PopUpBox = ({ setIsBoxActive, currentUser }) => {
     <>
       <div
         onClick={handleOverlayClick}
-        className="fixed cursor-pointer bg-black/80  inset-0 flex items-center justify-center"
+        className="fixed cursor-pointer bg-black/80  inset-0 flex items-center justify-center z-50"
       >
         <div className="z-50  bg-white px-20 h-[500px] w-[450px] flex flex-col items-center justify-center">
           <h1 className="text-4xl font-bold font-black mb-7">Edit Profile</h1>

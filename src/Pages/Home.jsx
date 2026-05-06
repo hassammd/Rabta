@@ -44,7 +44,7 @@ const Home = () => {
         const docsSnap = await getDocs(docsRef);
         console.log("these are all user posts", docsSnap);
         const posts = docsSnap.docs.map((items) => {
-          console.log("thieasdfasdf", items);
+          console.log("thieasdfasdf", items.data());
           return {
             postId: items.id,
             ...items.data(),
@@ -70,6 +70,7 @@ const Home = () => {
       {/* <CreatePost currentUser={currentUser} /> */}
       <h1>All user Posts</h1>
       {allUserPosts?.map((items) => {
+        console.log(items);
         return (
           <div
             key={items.id}
@@ -77,8 +78,12 @@ const Home = () => {
           >
             {/* Left: Profile Image */}
             <div className="flex-shrink-0">
-              <div className="h-10 w-10 rounded-full flex items-center justify-center bg-gray-300">
-                <FaUser />
+              <div className="overflow-hidden h-10 w-10 rounded-full flex items-center justify-center bg-gray-300">
+                {items.profilePic ? (
+                  <img src={items.profilePic} alt="" />
+                ) : (
+                  <FaUser />
+                )}
               </div>
             </div>
 

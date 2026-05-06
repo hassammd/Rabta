@@ -204,7 +204,8 @@ const CreatePost = ({ currentUser }) => {
             >
               {/* Left: Profile Image */}
               <div className="flex-shrink-0">
-                <div className="h-10 w-10 rounded-full flex items-center justify-center bg-gray-300">
+                <div className="overflow-hidden h-10 w-10 rounded-full flex items-center justify-center bg-gray-300">
+                  <img src={post.profilePic} alt="" />
                   <FaUser />
                 </div>
               </div>
