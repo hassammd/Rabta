@@ -19,24 +19,44 @@ import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { IoStatsChartOutline } from "react-icons/io5";
 import { BsBookmark, BsUpload } from "react-icons/bs";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { RxCross2 } from "react-icons/rx";
 
 const CreatePost = ({ currentUser }) => {
   const [postText, setPostText] = useState("");
   const [currentUserPost, setCurrentUserPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [imageFile, setImageFile] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
+  const [previewLink, setPreviewLink] = useState("");
 
-  //handle image file
-  const handleImageFile = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImageFile(file);
-      console.log("file is selected", file);
+  //upload image file to cloudinary
+
+  const uploadImage = async () => {
+    try {
+      if (!imageFile) {
+        console.error("Koi image select nahi ki gayi!");
+        return "";
+      }
+      const formData = new FormData();
+      formData.append("file", imageFile);
+      formData.append("upload_preset", "Rabta-preset");
+      formData.append("cloud_name", "dnraccvup");
+      const res = await fetch(
+        "https://api.cloudinary.com/v1_1/dnraccvup/image/upload",
+        {
+          method: "POST",
+          body: formData,
+        },
+      );
+      const resJson = await res.json();
+      console.log(resJson);
+      return resJson.secure_url;
+      setImageUrl(resJson.secure_url);
+    } catch (err) {
+      console.log(err);
     }
   };
-  useEffect(() => {
-    console.log(imageFile);
-  }, [imageFile]);
+
   //add post handler
   const handlePost = async (e) => {
     e.preventDefault();
@@ -45,23 +65,11 @@ const CreatePost = ({ currentUser }) => {
       return;
     }
     setLoading(true);
+    const finalImageUrl = await uploadImage();
     try {
-      const imageUrl = "";
-      //image file
-
-      if (imageFile) {
-        //make reference
-        const storageRef = ref(
-          storage,
-          `posts/${Date.now()}-${imageFile.name}`,
-        );
-        //upload
-        const uploadFile = await uploadBytesResumable(storageRef, imageFile);
-        imageUrl = await getDownloadURL(uploadFile.ref);
-      }
       await addDoc(collection(db, "posts"), {
         text: postText,
-        postImage: imageUrl,
+        postImage: finalImageUrl,
         firstName: currentUser.firstName,
         lastName: currentUser.lastName,
         profilePic: currentUser.profilePic,
@@ -72,6 +80,8 @@ const CreatePost = ({ currentUser }) => {
       });
 
       setPostText("");
+      setImageFile(null);
+      setPreviewLink("");
     } catch (err) {
       console.log(err);
     } finally {
@@ -109,7 +119,7 @@ const CreatePost = ({ currentUser }) => {
       }
     };
     fetchCurrentUserPosts();
-  }, [currentUser?.uid, currentUserPost]);
+  }, [currentUser?.uid, handlePost]);
 
   return (
     <>
@@ -140,7 +150,13 @@ const CreatePost = ({ currentUser }) => {
           <div className="flex items-center justify-between">
             <div>
               <input
-                onChange={handleImageFile}
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  if (file) {
+                    setImageFile(file);
+                    setPreviewLink(URL.createObjectURL(file));
+                  }
+                }}
                 className="hidden"
                 id="post-image"
                 type="file"
@@ -153,11 +169,29 @@ const CreatePost = ({ currentUser }) => {
               </label>
             </div>
             <input
-              className={`${postText ? "bg-blue-500 text-white" : "bg-gray-300"} border cursor-pointer border-gray-300 rounded-4xl px-5 py-2`}
+              className={`${postText || imageFile ? "bg-blue-500 text-white" : "bg-gray-300"} border cursor-pointer border-gray-300 rounded-4xl px-5 py-2`}
               type="submit"
               value={"Post"}
             />
           </div>
+          {/* image preview here */}
+          {previewLink && (
+            <div className="p-5 relative max-h-80 max-w-80 overflow-hidden">
+              <img
+                className="w-full h-full object-cover rounded-xl border border-gray-200"
+                src={previewLink}
+                alt=""
+              />
+              <RxCross2
+                onClick={() => {
+                  setPreviewLink("");
+                  setImageFile(null);
+                }}
+                className="    text-white absolute top-10 right-10 cursor-pointer z-50"
+              />
+            </div>
+          )}
+
           {loading ? "Posting..." : " "}
         </form>
       </div>
@@ -192,12 +226,19 @@ const CreatePost = ({ currentUser }) => {
                   <HiOutlineDotsHorizontal className="text-gray-500 hover:text-blue-500 transition-colors" />
                 </div>
 
-                {/* Post Text */}
-                <div className="text-[15px] text-black mt-0.5 leading-tight">
-                  {post.text}{" "}
-                  <span className="text-blue-500 hover:underline">
-                    #ufcperth
-                  </span>
+                <div className="flex flex-col gap-4">
+                  {/* Post Text */}
+                  <div className="text-[15px] text-black mt-0.5 leading-tight">
+                    {post.text}
+                    <span className="text-blue-500 hover:underline">
+                      #ufcperth
+                    </span>
+                  </div>
+                  {/* post image */}
+
+                  <div>
+                    <img src={post.postImage} alt="" />
+                  </div>
                 </div>
 
                 {/* Icons Row */}

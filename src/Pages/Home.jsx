@@ -13,44 +13,58 @@ import { FaRegComment, FaRegHeart, FaRetweet, FaUser } from "react-icons/fa6";
 import { MdVerified } from "react-icons/md";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { BsBookmark, BsUpload } from "react-icons/bs";
+
+import { onAuthStateChanged } from "firebase/auth";
 const Home = () => {
   const [userList, setUserList] = useState([]);
-  const [currentUser, setCurrentUser] = useState(null);
+  const [currentUser, setCurrentUser] = useState([]);
   const [allUserPosts, setAllUserPosts] = useState(null);
-  console.log("All user posts", allUserPosts);
+  const [isFetching, setIsFetching] = useState(false);
 
   useEffect(() => {
-    const fetchCurrentUser = async () => {
-      const user = auth.currentUser;
-      console.log("this is user from auth", user);
-      const docRef = doc(db, "users", user.uid);
-      const docSnap = await getDoc(docRef);
-      console.log("this is doc Snap", docSnap);
-      if (docSnap.exists()) {
-        setCurrentUser(docSnap.data());
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const docRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(docRef);
+        console.log("this is doc Snap", docSnap);
+        if (docSnap.exists()) {
+          setCurrentUser(docSnap.data());
+        }
       }
-    };
-    fetchCurrentUser();
+      return () => unsubscribe();
+    });
   }, []);
   ///fetch all users Posts
 
   useEffect(() => {
     const fetchAllUsersPosts = async () => {
-      const docsRef = collection(db, "posts");
-      const docsSnap = await getDocs(docsRef);
-      console.log("these are all user posts", docsSnap);
-      const posts = docsSnap.docs.map((items) => {
-        console.log("thieasdfasdf", items);
-        return {
-          postId: items.id,
-          ...items.data(),
-        };
-      });
-      setAllUserPosts(posts);
+      setIsFetching(true);
+      try {
+        const docsRef = collection(db, "posts");
+        const docsSnap = await getDocs(docsRef);
+        console.log("these are all user posts", docsSnap);
+        const posts = docsSnap.docs.map((items) => {
+          console.log("thieasdfasdf", items);
+          return {
+            postId: items.id,
+            ...items.data(),
+          };
+        });
+        setAllUserPosts(posts);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setIsFetching(false);
+      }
     };
     fetchAllUsersPosts();
   }, []);
-
+  if (isFetching)
+    return (
+      <h1 className="p-10 text-center font-bold">
+        <span className="loading loading-spinner text-info"></span>
+      </h1>
+    );
   return (
     <>
       {/* <CreatePost currentUser={currentUser} /> */}
@@ -85,10 +99,18 @@ const Home = () => {
                 <HiOutlineDotsHorizontal className="text-gray-500 hover:text-blue-500 transition-colors" />
               </div>
 
-              {/* Post Text */}
-              <div className="text-[15px] text-black mt-0.5 leading-tight">
-                {items.text}{" "}
-                <span className="text-blue-500 hover:underline">#ufcperth</span>
+              <div className="flex flex-col gap-4">
+                {/* Post Text */}
+                <div className="text-[15px] text-black mt-0.5 leading-tight">
+                  {items.text}
+                  <span className="text-blue-500 hover:underline">
+                    #ufcperth
+                  </span>
+                </div>
+                {/* post image */}
+                <div>
+                  <img src={items.postImage} alt="" />
+                </div>
               </div>
 
               {/* Icons Row */}
