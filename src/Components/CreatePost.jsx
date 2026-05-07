@@ -132,7 +132,11 @@ const CreatePost = ({ currentUser }) => {
           <div className="flex">
             <div className=" ">
               <div className="h-12 w-12 bg-gray-200 border border-gray-300 flex items-center justify-center rounded-full overflow-hidden  ">
-                <FaUser className="text-gray-400 text-xl" />
+                {currentUser.profilePic ? (
+                  <img src={currentUser.profilePic} alt="" />
+                ) : (
+                  <FaUser className="text-gray-400 text-xl" />
+                )}
               </div>
             </div>
             <div className="w-full">

@@ -2,7 +2,16 @@ import { useEffect, useState } from "react";
 import { FaUser } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 import { auth, db } from "../../Firebase";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+  writeBatch,
+} from "firebase/firestore";
 import { LuCalendarDays } from "react-icons/lu";
 import PopUpBox from "../Components/PopUpBox";
 import CreatePost from "../Components/CreatePost";
@@ -12,7 +21,7 @@ const Profile = () => {
   const [isBoxActive, setIsBoxActive] = useState(false);
   const [profielImageUrl, setProfileImageUrl] = useState(null);
 
-  //image upload
+  //image upload on Cloudinary
   const prfileImageUpload = async () => {
     if (!profielImageUrl) {
       return alert("select image file");
@@ -37,9 +46,24 @@ const Profile = () => {
       if (currentUser?.uid) {
         const userRef = doc(db, "users", currentUser.uid);
         await updateDoc(userRef, {
-          profilePic: finalUrl, //linke save in database
+          profilePic: finalUrl, //link save in database
         });
-        //local state update
+
+        // All old posts profile image update
+
+        const postsRef = collection(db, "posts");
+        const q = query(postsRef, where("uid", "==", currentUser.uid));
+        const querySnapshot = await getDocs(q);
+        console.log("this is Query Snap.....", querySnapshot);
+        //batch start to update all posts at once
+        const batch = writeBatch(db);
+        querySnapshot.forEach((postDoc) => {
+          const postDocRef = doc(db, "posts", postDoc.id);
+          batch.update(postDocRef, { profilePic: finalUrl });
+        });
+        await batch.commit();
+        setcurrentUser((prev) => ({ ...prev, profilePic: finalUrl }));
+        setProfileImageUrl(null);
       }
     } catch (err) {
       console.log(err);
@@ -90,8 +114,15 @@ const Profile = () => {
                 className=" cursor-pointer flex items-end  gap-4 absolute -bottom-9 left-9"
               >
                 <div className="overflow-hidden border border-gray-300  h-30 w-30 bg-gray-100 flex items-center justify-center rounded-full">
-                  <img className="" src={currentUser.profilePic} alt="" />
-                  <FaUser className="text-gray-300 text-5xl" />
+                  {currentUser.profilePic ? (
+                    <img
+                      className="h-full w-full object-cover"
+                      src={currentUser.profilePic}
+                      alt="Profile"
+                    />
+                  ) : (
+                    <FaUser className="text-gray-300 text-5xl" />
+                  )}
                 </div>
               </label>
             </div>
