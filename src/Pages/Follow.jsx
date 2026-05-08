@@ -1,31 +1,15 @@
 import { useEffect, useState } from "react";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "../../Firebase";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { auth, db } from "../../Firebase";
+import { useSelector } from "react-redux";
 
 const Follow = () => {
-  const [userList, setUserList] = useState([]);
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const usersRef = collection(db, "users");
-        const docSnap = await getDocs(usersRef);
-        const userSnapList = docSnap.docs.map((item) => {
-          return {
-            id: item.id,
-            ...item.data(),
-          };
-        });
-        setUserList(userSnapList);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchUsers();
-  }, []);
+  const userList = useSelector((state) => state.allUsers.allUsers);
+
   return (
     <>
       <h1>Suggested for you</h1>
-      {userList.map((users) => {
+      {userList?.map((users) => {
         return (
           <>
             <div class="flex items-center justify-between w-full p-2  rounded-full transition-all cursor-pointer">

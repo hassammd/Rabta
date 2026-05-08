@@ -29,6 +29,7 @@ const signUpUser = createAsyncThunk(
         email: user.email,
         bio: "Hi Iam using Rabta",
         profilePic: "",
+        bannerPic: "",
         createAt: new Date().toISOString(),
         followers: [],
         following: [],

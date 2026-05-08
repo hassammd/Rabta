@@ -30,11 +30,12 @@ const CreatePost = ({ currentUser }) => {
   const [previewLink, setPreviewLink] = useState("");
 
   //upload image file to cloudinary
+  console.log("this is image url from post", imageUrl);
 
   const uploadImage = async () => {
     try {
       if (!imageFile) {
-        console.error("Koi image select nahi ki gayi!");
+        console.error("Select Your Image");
         return "";
       }
       const formData = new FormData();
@@ -49,9 +50,9 @@ const CreatePost = ({ currentUser }) => {
         },
       );
       const resJson = await res.json();
-      console.log(resJson);
+
       return resJson.secure_url;
-      setImageUrl(resJson.secure_url);
+      // setImageUrl(resJson.secure_url);
     } catch (err) {
       console.log(err);
     }
@@ -60,12 +61,11 @@ const CreatePost = ({ currentUser }) => {
   //add post handler
   const handlePost = async (e) => {
     e.preventDefault();
-    if (!currentUser.uid) {
-      console.log("User UID not available yet...");
-      return;
-    }
+    if (!currentUser.uid) return;
+    if (!postText.trim() && !imageFile) return;
     setLoading(true);
     const finalImageUrl = await uploadImage();
+
     try {
       await addDoc(collection(db, "posts"), {
         text: postText,
@@ -119,7 +119,7 @@ const CreatePost = ({ currentUser }) => {
       }
     };
     fetchCurrentUserPosts();
-  }, [currentUser?.uid, handlePost]);
+  }, [currentUser?.uid, imageFile]);
 
   return (
     <>
@@ -173,7 +173,7 @@ const CreatePost = ({ currentUser }) => {
               </label>
             </div>
             <input
-              className={`${postText || imageFile ? "bg-blue-500 text-white" : "bg-gray-300"} border cursor-pointer border-gray-300 rounded-4xl px-5 py-2`}
+              className={`${postText || imageFile ? "bg-blue-500 text-white" : "bg-gray-300 disabled"} border cursor-pointer border-gray-300 rounded-4xl px-5 py-2`}
               type="submit"
               value={"Post"}
             />

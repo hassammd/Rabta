@@ -20,8 +20,6 @@ const SignUp = ({ setIsLogin }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log(errors);
-
   const SubmitHandler = (e) => {
     e.preventDefault();
     let newError = {};
