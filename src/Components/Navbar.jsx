@@ -1,8 +1,9 @@
 import { signOut } from "firebase/auth";
 import { auth, db } from "../../Firebase";
 import { Link, NavLink, useNavigate } from "react-router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setLogout } from "../Redux/SignInSlice";
+import { setUser } from "../Redux/userSlice";
 import { IoHomeOutline } from "react-icons/io5";
 import { FiUserPlus } from "react-icons/fi";
 import { LuUser } from "react-icons/lu";
@@ -15,8 +16,8 @@ import { MdLogout } from "react-icons/md";
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [currentUser, setCurrentUser] = useState({});
-  console.log("this is current user", currentUser);
+
+  const currentUser = useSelector((state) => state.user.user);
 
   //fetch user
   useEffect(() => {
@@ -26,7 +27,9 @@ const Navbar = () => {
         const docRef = doc(db, "users", user.uid);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          setCurrentUser(docSnap.data());
+          // setCurrentUser(docSnap.data());
+
+          dispatch(setUser(docSnap.data()));
         }
       } catch (err) {
         console.log(err);

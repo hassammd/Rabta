@@ -44,7 +44,6 @@ const Home = () => {
         const docsSnap = await getDocs(docsRef);
         console.log("these are all user posts", docsSnap);
         const posts = docsSnap.docs.map((items) => {
-          console.log("thieasdfasdf", items.data());
           return {
             postId: items.id,
             ...items.data(),
@@ -70,7 +69,6 @@ const Home = () => {
       {/* <CreatePost currentUser={currentUser} /> */}
       <h1>All user Posts</h1>
       {allUserPosts?.map((items) => {
-        console.log(items);
         return (
           <div
             key={items.id}

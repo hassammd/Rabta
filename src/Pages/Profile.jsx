@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { FaUser } from "react-icons/fa6";
-import { useSelector } from "react-redux";
+import { FaCamera, FaUser } from "react-icons/fa6";
+import { useDispatch, useSelector } from "react-redux";
 import { auth, db } from "../../Firebase";
 import {
   collection,
@@ -15,17 +15,28 @@ import {
 import { LuCalendarDays } from "react-icons/lu";
 import PopUpBox from "../Components/PopUpBox";
 import CreatePost from "../Components/CreatePost";
+import { IoCameraOutline } from "react-icons/io5";
+import { MdOutlineDeleteOutline } from "react-icons/md";
+import { RiDeleteBinLine } from "react-icons/ri";
+import button from "daisyui/components/button";
+import { setUser } from "../Redux/userSlice";
 const Profile = () => {
-  const [currentUser, setcurrentUser] = useState({});
+  // const [currentUser, setcurrentUser] = useState({});
   const [loading, setLoading] = useState(true);
   const [isBoxActive, setIsBoxActive] = useState(false);
   const [profielImageUrl, setProfileImageUrl] = useState(null);
+  const [editProfileImageBox, setEditProfileImageBox] = useState(false);
+  const [profileImageLoading, setProfileImageLoading] = useState(false);
+  const dispatch = useDispatch();
+  const currentUser = useSelector((state) => state.user.user);
+  console.log("this is useSelector", currentUser);
 
   //image upload on Cloudinary
   const prfileImageUpload = async () => {
     if (!profielImageUrl) {
       return alert("select image file");
     }
+    setProfileImageLoading(true);
     try {
       // Cloudinary Upload
       const formData = new FormData();
@@ -62,8 +73,13 @@ const Profile = () => {
           batch.update(postDocRef, { profilePic: finalUrl });
         });
         await batch.commit();
-        setcurrentUser((prev) => ({ ...prev, profilePic: finalUrl }));
+        dispatch(setUser({ ...currentUser, profilePic: finalUrl }));
+        // setcurrentUser();
         setProfileImageUrl(null);
+        setProfileImageLoading(false);
+        setTimeout(() => {
+          document.getElementById("my_modal_2").close();
+        }, 2000);
       }
     } catch (err) {
       console.log(err);
@@ -81,7 +97,7 @@ const Profile = () => {
         const docRef = doc(db, "users", User.uid);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          setcurrentUser(docSnap.data());
+          dispatch(setUser(docSnap.data()));
         }
       } catch (err) {
         console.log(err);
@@ -90,7 +106,7 @@ const Profile = () => {
       }
     };
     fetchcurrentUser();
-  }, [currentUser]);
+  }, [dispatch]);
   return (
     <>
       {!loading ? (
@@ -109,11 +125,13 @@ const Profile = () => {
                 id="profile_image"
                 type="file"
               />
-              <label
-                htmlFor="profile_image"
-                className=" cursor-pointer flex items-end  gap-4 absolute -bottom-9 left-9"
-              >
-                <div className="overflow-hidden border border-gray-300  h-30 w-30 bg-gray-100 flex items-center justify-center rounded-full">
+              <label className=" cursor-pointer flex items-end  gap-4 absolute -bottom-9 left-9">
+                <div
+                  onClick={() =>
+                    document.getElementById("my_modal_2").showModal()
+                  }
+                  className="overflow-hidden border border-gray-300  h-30 w-30 bg-gray-100 flex items-center justify-center rounded-full"
+                >
                   {currentUser.profilePic ? (
                     <img
                       className="h-full w-full object-cover"
@@ -125,14 +143,91 @@ const Profile = () => {
                   )}
                 </div>
               </label>
+              {/* <label
+                htmlFor="profile_image"
+                className=" cursor-pointer flex items-end  gap-4 absolute -bottom-9 left-9"
+              >
+                <div
+                  onClick={() => setEditProfileImageBox(true)}
+                  className="overflow-hidden border border-gray-300  h-30 w-30 bg-gray-100 flex items-center justify-center rounded-full"
+                >
+                  {currentUser.profilePic ? (
+                    <img
+                      className="h-full w-full object-cover"
+                      src={currentUser.profilePic}
+                      alt="Profile"
+                    />
+                  ) : (
+                    <FaUser className="text-gray-300 text-5xl" />
+                  )}
+                </div>
+              </label> */}
             </div>
           </div>
-          <button
-            onClick={prfileImageUpload}
-            className="bg-red-600 cursor-pointer"
-          >
-            Upload Image
-          </button>
+
+          {editProfileImageBox ? (
+            ""
+          ) : (
+            <>
+              {/* Open the modal using document.getElementById('ID').showModal() method */}
+
+              <dialog id="my_modal_2" className="modal">
+                <div className="flex flex-col gap-14 items-center justify-center modal-box h-[400px]">
+                  <div>
+                    <label
+                      htmlFor="profile_image"
+                      className=" cursor-pointer flex items-end  gap-4 "
+                    >
+                      <div
+                        onClick={() =>
+                          document.getElementById("my_modal_2").showModal()
+                        }
+                        className="overflow-hidden border border-gray-300  h-30 w-30 bg-gray-100 flex items-center justify-center rounded-full"
+                      >
+                        {!profileImageLoading ? (
+                          <img
+                            className="h-full w-full object-cover"
+                            src={currentUser.profilePic}
+                            alt="Profile"
+                          />
+                        ) : (
+                          <span className="loading loading-bars loading-xs"></span>
+                        )}
+                      </div>
+                    </label>
+                  </div>
+                  <div className="flex justify-between items-center w-full">
+                    <div>
+                      {profielImageUrl ? (
+                        <button
+                          onClick={prfileImageUpload}
+                          className="btn bg-gray-100 rounded-full px-4"
+                        >
+                          Save Changes
+                        </button>
+                      ) : (
+                        <label
+                          htmlFor="profile_image"
+                          className="cursor-pointer flex flex-col items-center"
+                        >
+                          <IoCameraOutline className="text-2xl text-gray-500" />
+                          <h1>Update</h1>
+                        </label>
+                      )}
+                    </div>
+                    <div className="flex flex-col items-center"></div>
+                    <div className="flex flex-col items-center">
+                      <RiDeleteBinLine className="cursor-pointer text-2xl text-gray-500" />
+                      <h1>Delete</h1>
+                    </div>
+                  </div>
+                </div>
+                <form method="dialog" className="modal-backdrop">
+                  <button>close</button>
+                </form>
+              </dialog>
+            </>
+          )}
           {/* banner end */}
 
           <div className=" flex flex-col gap-4 px-4 mt-15">

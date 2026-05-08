@@ -2,30 +2,38 @@ import { Outlet } from "react-router";
 import Navbar from "./Navbar";
 import Profile from "../Pages/Profile";
 import { useEffect, useState } from "react";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "../../Firebase";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { auth, db } from "../../Firebase";
 import { FaUser } from "react-icons/fa6";
+import { useDispatch, useSelector } from "react-redux";
+import { setAllUsers } from "../Redux/allUsersSlice";
 
 const Layout = () => {
-  const [userList, setUserList] = useState([]);
+  const userList = useSelector((state) => state.allUsers.allUsers);
+  const dispatch = useDispatch();
+  console.log("this is useSelector", userList);
   useEffect(() => {
     const fetchUsers = async () => {
+      const user = auth.currentUser;
       try {
         const usersRef = collection(db, "users");
-        const docSnap = await getDocs(usersRef);
+        const q = query(usersRef, where("uid", "!=", user.uid));
+
+        const docSnap = await getDocs(q);
         const userSnapList = docSnap.docs.map((item) => {
           return {
             id: item.id,
             ...item.data(),
           };
         });
-        setUserList(userSnapList);
+        // setUserList(userSnapList);
+        dispatch(setAllUsers(userSnapList));
       } catch (err) {
         console.log(err);
       }
     };
     fetchUsers();
-  }, []);
+  }, [dispatch]);
   return (
     <>
       <div className="container">
@@ -63,7 +71,7 @@ const Layout = () => {
                 />
               </label>
             </div>
-            {/* user list (static) */}
+            {/* user list   */}
 
             <div className="flex flex-col gap-4">
               {userList.map((users) => {
