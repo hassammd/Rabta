@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { auth, db } from "../../Firebase";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 
 const Follow = () => {
   const userList = useSelector((state) => state.allUsers.allUsers);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -12,7 +14,10 @@ const Follow = () => {
       {userList?.map((users) => {
         return (
           <>
-            <div class="flex items-center justify-between w-full p-2  rounded-full transition-all cursor-pointer">
+            <div
+              onClick={() => navigate(`/profile/${users.uid}`)}
+              className="flex items-center justify-between w-full p-2  rounded-full transition-all cursor-pointer"
+            >
               <div class="flex items-center gap-3">
                 <div class="h-12 w-12 bg-gray-200 border border-gray-300 flex items-center justify-center rounded-full overflow-hidden flex-shrink-0">
                   <img src={users.profilePic} alt="" />

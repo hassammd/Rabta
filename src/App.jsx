@@ -35,6 +35,7 @@ function App() {
             <Route index element={<Home />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/follow" element={<Follow />} />
+            <Route path="/profile/:uid" element={<Profile />} />
           </Route>
         </Route>
 

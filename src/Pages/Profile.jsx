@@ -21,6 +21,7 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import button from "daisyui/components/button";
 import { setUser, updateBannerImage } from "../Redux/userSlice";
 import { RxCross2 } from "react-icons/rx";
+import { useParams } from "react-router";
 
 const Profile = () => {
   // const [currentUser, setcurrentUser] = useState({});
@@ -32,13 +33,14 @@ const Profile = () => {
   const [bannerImageLoading, setBannerImageLoading] = useState(false);
   const [previewLink, setPreviewLink] = useState("");
   const [bannerImageUrl, setBannerImageUrl] = useState(null);
-  console.log("this is preview link", previewLink);
+
+  const param = useParams();
+  console.log("this is param", param);
 
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.user.user);
 
   //upload banner image on Cloudinary
-
   const bannerImageUpload = async () => {
     if (!bannerImageUrl) {
       return alert("Select image for Your Banner");
@@ -133,14 +135,15 @@ const Profile = () => {
   };
 
   //add user profile image url in firestore data
-
   useEffect(() => {
     const fetchcurrentUser = async () => {
+      setLoading(true);
       try {
-        //current user
-        const User = auth.currentUser;
-
-        const docRef = doc(db, "users", User.uid);
+        // user
+        const UserId = param.uid || auth.currentUser?.uid;
+        console.log("this is user from fetch", UserId);
+        if (!UserId) return;
+        const docRef = doc(db, "users", UserId);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           dispatch(setUser(docSnap.data()));
@@ -152,7 +155,7 @@ const Profile = () => {
       }
     };
     fetchcurrentUser();
-  }, [dispatch]);
+  }, [param.uid]);
   return (
     <>
       {!loading ? (
@@ -176,15 +179,19 @@ const Profile = () => {
               />
 
               {/* banner edit button */}
-              <span
-                onClick={() =>
-                  document.getElementById("banner-model").showModal()
-                }
-                className="absolute top-4 right-4 p-2 bg-gray-300 rounded-full cursor-pointer hover:bg-gray-200 transition-all duration-300"
-              >
-                <MdEdit className="text-xl " />
-              </span>
+              {!param.uid && (
+                <span
+                  onClick={() =>
+                    document.getElementById("banner-model").showModal()
+                  }
+                  className="absolute top-4 right-4 p-2 bg-gray-300 rounded-full cursor-pointer hover:bg-gray-200 transition-all duration-300"
+                >
+                  <MdEdit className="text-xl " />
+                </span>
+              )}
+
               {/* Open modal for banner image */}
+
               <dialog id="banner-model" className="modal">
                 <div className="modal-box">
                   {!previewLink ? (
@@ -253,63 +260,64 @@ const Profile = () => {
           ) : (
             <>
               {/* Open modal for profile image */}
-
-              <dialog id="my_modal_2" className="modal">
-                <div className="flex flex-col gap-14 items-center justify-center modal-box h-[400px]">
-                  <div>
-                    <label
-                      htmlFor="profile_image"
-                      className=" cursor-pointer flex items-end  gap-4 "
-                    >
-                      <div
-                        onClick={() =>
-                          document.getElementById("my_modal_2").showModal()
-                        }
-                        className="overflow-hidden border border-gray-300  h-30 w-30 bg-gray-100 flex items-center justify-center rounded-full"
+              {!param.uid && (
+                <dialog id="my_modal_2" className="modal">
+                  <div className="flex flex-col gap-14 items-center justify-center modal-box h-[400px]">
+                    <div>
+                      <label
+                        htmlFor="profile_image"
+                        className=" cursor-pointer flex items-end  gap-4 "
                       >
-                        {!profileImageLoading ? (
-                          <img
-                            className="h-full w-full object-cover"
-                            src={currentUser.profilePic}
-                            alt="Profile"
-                          />
+                        <div
+                          onClick={() =>
+                            document.getElementById("my_modal_2").showModal()
+                          }
+                          className="overflow-hidden border border-gray-300  h-30 w-30 bg-gray-100 flex items-center justify-center rounded-full"
+                        >
+                          {!profileImageLoading ? (
+                            <img
+                              className="h-full w-full object-cover"
+                              src={currentUser.profilePic}
+                              alt="Profile"
+                            />
+                          ) : (
+                            <span className="loading loading-bars loading-xs"></span>
+                          )}
+                        </div>
+                      </label>
+                    </div>
+
+                    <div className="flex justify-between items-center w-full">
+                      <div>
+                        {profielImageUrl ? (
+                          <button
+                            onClick={prfileImageUpload}
+                            className="btn bg-gray-100 rounded-full px-4"
+                          >
+                            Save Changes
+                          </button>
                         ) : (
-                          <span className="loading loading-bars loading-xs"></span>
+                          <label
+                            htmlFor="profile_image"
+                            className="cursor-pointer flex flex-col items-center"
+                          >
+                            <IoCameraOutline className="text-2xl text-gray-500" />
+                            <h1>Update</h1>
+                          </label>
                         )}
                       </div>
-                    </label>
-                  </div>
-
-                  <div className="flex justify-between items-center w-full">
-                    <div>
-                      {profielImageUrl ? (
-                        <button
-                          onClick={prfileImageUpload}
-                          className="btn bg-gray-100 rounded-full px-4"
-                        >
-                          Save Changes
-                        </button>
-                      ) : (
-                        <label
-                          htmlFor="profile_image"
-                          className="cursor-pointer flex flex-col items-center"
-                        >
-                          <IoCameraOutline className="text-2xl text-gray-500" />
-                          <h1>Update</h1>
-                        </label>
-                      )}
-                    </div>
-                    <div className="flex flex-col items-center"></div>
-                    <div className="flex flex-col items-center">
-                      <RiDeleteBinLine className="cursor-pointer text-2xl text-gray-500" />
-                      <h1>Delete</h1>
+                      <div className="flex flex-col items-center"></div>
+                      <div className="flex flex-col items-center">
+                        <RiDeleteBinLine className="cursor-pointer text-2xl text-gray-500" />
+                        <h1>Delete</h1>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <form method="dialog" className="modal-backdrop">
-                  <button>close</button>
-                </form>
-              </dialog>
+                  <form method="dialog" className="modal-backdrop">
+                    <button>close</button>
+                  </form>
+                </dialog>
+              )}
             </>
           )}
           {/* banner end */}
@@ -326,12 +334,15 @@ const Profile = () => {
                   {currentUser.userName?.toLowerCase()}
                 </span>
               </div>
-              <button
-                onClick={() => setIsBoxActive(!isBoxActive)}
-                className="btn rounded-full"
-              >
-                Set up profile
-              </button>
+              {!param.uid && (
+                <button
+                  onClick={() => setIsBoxActive(!isBoxActive)}
+                  className="btn rounded-full"
+                >
+                  Set up profile
+                </button>
+              )}
+
               {isBoxActive ? (
                 <PopUpBox
                   currentUser={currentUser}
@@ -353,10 +364,55 @@ const Profile = () => {
               </div>
             </div>
           </div>
+
           <CreatePost currentUser={currentUser} />
         </div>
       ) : (
-        <span class="$$loading $$loading-spinner text-info"></span>
+        <div className="flex flex-col h-screen rounded-sm animate-pulse">
+          {/* Banner Skeleton */}
+          <div className="relative bg-gray-200 h-[250px] w-full">
+            {/* Profile Image Skeleton */}
+            <div className="absolute -bottom-9 left-9">
+              <div className="h-32 w-32 bg-gray-300 rounded-full border-4 border-white"></div>
+            </div>
+          </div>
+
+          {/* Profile Info Skeleton */}
+          <div className="flex flex-col gap-4 px-4 mt-16">
+            <div className="flex justify-between items-start">
+              <div className="flex flex-col gap-2">
+                {/* Name */}
+                <div className="h-6 w-48 bg-gray-300 rounded-md"></div>
+                {/* Username */}
+                <div className="h-4 w-32 bg-gray-200 rounded-md"></div>
+              </div>
+              {/* Button */}
+              <div className="h-10 w-32 bg-gray-300 rounded-full"></div>
+            </div>
+
+            {/* Bio/Stats Skeleton */}
+            <div className="flex flex-col gap-4 mt-2">
+              {/* Joined Date */}
+              <div className="h-4 w-40 bg-gray-200 rounded-md"></div>
+              {/* Followers/Following */}
+              <div className="flex gap-3">
+                <div className="h-4 w-24 bg-gray-200 rounded-md"></div>
+                <div className="h-4 w-24 bg-gray-200 rounded-md"></div>
+              </div>
+            </div>
+          </div>
+
+          {/* Feed Skeleton (Create Post area) */}
+          <div className="px-4 mt-10">
+            <div className="h-24 w-full bg-gray-100 rounded-xl border border-gray-200"></div>
+          </div>
+          <div className="px-4 mt-10">
+            <div className="h-15 w-full bg-gray-100 rounded-xl border border-gray-200"></div>
+          </div>
+          <div className="px-4 mt-10">
+            <div className="h-15 w-full bg-gray-100 rounded-xl border border-gray-200"></div>
+          </div>
+        </div>
       )}
     </>
   );

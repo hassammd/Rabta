@@ -1,4 +1,4 @@
-import { Outlet } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 import Navbar from "./Navbar";
 import Profile from "../Pages/Profile";
 import { useEffect, useState } from "react";
@@ -11,6 +11,7 @@ import { setAllUsers } from "../Redux/allUsersSlice";
 const Layout = () => {
   const userList = useSelector((state) => state.allUsers.allUsers);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   console.log("this is useSelector", userList);
   useEffect(() => {
     const fetchUsers = async () => {
@@ -77,7 +78,10 @@ const Layout = () => {
               {userList.map((users) => {
                 return (
                   <>
-                    <div class="flex items-center justify-between w-full p-2  rounded-full transition-all cursor-pointer">
+                    <div
+                      onClick={() => navigate(`/profile/${users.uid}`)}
+                      class="flex items-center justify-between w-full p-2  rounded-full transition-all cursor-pointer"
+                    >
                       <div class="flex items-center gap-3">
                         <div class="h-12 w-12 bg-gray-200 border border-gray-300 flex items-center justify-center rounded-full overflow-hidden flex-shrink-0">
                           {users.profilePic ? (

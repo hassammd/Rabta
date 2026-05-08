@@ -20,6 +20,7 @@ import { IoStatsChartOutline } from "react-icons/io5";
 import { BsBookmark, BsUpload } from "react-icons/bs";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { RxCross2 } from "react-icons/rx";
+import { useParams } from "react-router";
 
 const CreatePost = ({ currentUser }) => {
   const [postText, setPostText] = useState("");
@@ -29,8 +30,9 @@ const CreatePost = ({ currentUser }) => {
   const [imageUrl, setImageUrl] = useState("");
   const [previewLink, setPreviewLink] = useState("");
 
+  const param = useParams();
+  console.log(param);
   //upload image file to cloudinary
-  console.log("this is image url from post", imageUrl);
 
   const uploadImage = async () => {
     try {
@@ -123,82 +125,84 @@ const CreatePost = ({ currentUser }) => {
 
   return (
     <>
-      <div className="">
-        <form
-          onSubmit={handlePost}
-          className="p-4 flex flex-col border-b-1 border-t-1 mt-5 border-gray-300"
-          action=""
-        >
-          <div className="flex">
-            <div className=" ">
-              <div className="h-12 w-12 bg-gray-200 border border-gray-300 flex items-center justify-center rounded-full overflow-hidden  ">
-                {currentUser.profilePic ? (
-                  <img src={currentUser.profilePic} alt="" />
-                ) : (
-                  <FaUser className="text-gray-400 text-xl" />
-                )}
+      {!param.uid && (
+        <div className="">
+          <form
+            onSubmit={handlePost}
+            className="p-4 flex flex-col border-b-1 border-t-1 mt-5 border-gray-300"
+            action=""
+          >
+            <div className="flex">
+              <div className=" ">
+                <div className="h-12 w-12 bg-gray-200 border border-gray-300 flex items-center justify-center rounded-full overflow-hidden  ">
+                  {currentUser.profilePic ? (
+                    <img src={currentUser.profilePic} alt="" />
+                  ) : (
+                    <FaUser className="text-gray-400 text-xl" />
+                  )}
+                </div>
+              </div>
+              <div className="w-full">
+                <textarea
+                  onChange={(e) => setPostText(e.target.value)}
+                  className="p-3 border-0  resize-none outline-0 border-gray-300 w-full"
+                  rows="3"
+                  name=""
+                  id=""
+                  value={postText}
+                  placeholder=" What's happening?"
+                ></textarea>
               </div>
             </div>
-            <div className="w-full">
-              <textarea
-                onChange={(e) => setPostText(e.target.value)}
-                className="p-3 border-0  resize-none outline-0 border-gray-300 w-full"
-                rows="3"
-                name=""
-                id=""
-                value={postText}
-                placeholder=" What's happening?"
-              ></textarea>
-            </div>
-          </div>
-          <div className="flex items-center justify-between">
-            <div>
+            <div className="flex items-center justify-between">
+              <div>
+                <input
+                  onChange={(e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                      setImageFile(file);
+                      setPreviewLink(URL.createObjectURL(file));
+                    }
+                  }}
+                  className="hidden"
+                  id="post-image"
+                  type="file"
+                />
+                <label
+                  htmlFor="post-image"
+                  className="cursor-pointer text-3xl hover:bg-blue-100/50 hover:text-blue-500 rounded-full transition-all"
+                >
+                  <FiImage />
+                </label>
+              </div>
               <input
-                onChange={(e) => {
-                  const file = e.target.files[0];
-                  if (file) {
-                    setImageFile(file);
-                    setPreviewLink(URL.createObjectURL(file));
-                  }
-                }}
-                className="hidden"
-                id="post-image"
-                type="file"
-              />
-              <label
-                htmlFor="post-image"
-                className="cursor-pointer text-3xl hover:bg-blue-100/50 hover:text-blue-500 rounded-full transition-all"
-              >
-                <FiImage />
-              </label>
-            </div>
-            <input
-              className={`${postText || imageFile ? "bg-blue-500 text-white" : "bg-gray-300 disabled"} border cursor-pointer border-gray-300 rounded-4xl px-5 py-2`}
-              type="submit"
-              value={"Post"}
-            />
-          </div>
-          {/* image preview here */}
-          {previewLink && (
-            <div className="p-5 relative max-h-80 max-w-80 overflow-hidden">
-              <img
-                className="w-full h-full object-cover rounded-xl border border-gray-200"
-                src={previewLink}
-                alt=""
-              />
-              <RxCross2
-                onClick={() => {
-                  setPreviewLink("");
-                  setImageFile(null);
-                }}
-                className="    text-white absolute top-10 right-10 cursor-pointer z-50"
+                className={`${postText || imageFile ? "bg-blue-500 text-white" : "bg-gray-300 disabled"} border cursor-pointer border-gray-300 rounded-4xl px-5 py-2`}
+                type="submit"
+                value={"Post"}
               />
             </div>
-          )}
+            {/* image preview here */}
+            {previewLink && (
+              <div className="p-5 relative max-h-80 max-w-80 overflow-hidden">
+                <img
+                  className="w-full h-full object-cover rounded-xl border border-gray-200"
+                  src={previewLink}
+                  alt=""
+                />
+                <RxCross2
+                  onClick={() => {
+                    setPreviewLink("");
+                    setImageFile(null);
+                  }}
+                  className="    text-white absolute top-10 right-10 cursor-pointer z-50"
+                />
+              </div>
+            )}
 
-          {loading ? "Posting..." : " "}
-        </form>
-      </div>
+            {loading ? "Posting..." : " "}
+          </form>
+        </div>
+      )}
       <div>
         {currentUserPost?.map((post) => {
           return (
