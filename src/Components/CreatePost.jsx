@@ -21,6 +21,7 @@ import { BsBookmark, BsUpload } from "react-icons/bs";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { RxCross2 } from "react-icons/rx";
 import { useParams } from "react-router";
+import { useSelector } from "react-redux";
 
 const CreatePost = ({ currentUser }) => {
   const [postText, setPostText] = useState("");
@@ -29,11 +30,11 @@ const CreatePost = ({ currentUser }) => {
   const [imageFile, setImageFile] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
   const [previewLink, setPreviewLink] = useState("");
+  const [postLikes, setPostLikes] = useState(0);
 
   const param = useParams();
-  console.log(param);
-  //upload image file to cloudinary
 
+  //upload image file to cloudinary
   const uploadImage = async () => {
     try {
       if (!imageFile) {
@@ -246,7 +247,7 @@ const CreatePost = ({ currentUser }) => {
                   {/* post image */}
 
                   <div>
-                    <img src={post.postImage} alt="" />
+                    <img className="rounded-lg" src={post.postImage} alt="" />
                   </div>
                 </div>
 

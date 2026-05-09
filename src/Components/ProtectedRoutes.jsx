@@ -3,7 +3,7 @@ import { Navigate, Outlet, useNavigate } from "react-router";
 
 const ProtectedRoutes = () => {
   const { user, loading } = useSelector((state) => state.signIn);
-  console.log("this is user and loading", user, loading);
+
   const navigate = useNavigate();
   if (loading) {
     return (

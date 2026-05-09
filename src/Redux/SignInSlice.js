@@ -23,8 +23,6 @@ const userSignIn = createAsyncThunk(
       console.log(err);
       rejectWithValue(err);
     }
-
-    console.log(userCredentials);
   },
 );
 

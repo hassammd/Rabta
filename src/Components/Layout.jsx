@@ -12,7 +12,7 @@ const Layout = () => {
   const userList = useSelector((state) => state.allUsers.allUsers);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log("this is useSelector", userList);
+
   useEffect(() => {
     const fetchUsers = async () => {
       const user = auth.currentUser;

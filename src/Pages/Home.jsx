@@ -6,7 +6,16 @@ import { IoHomeOutline, IoStatsChartOutline } from "react-icons/io5";
 import { FiUserPlus } from "react-icons/fi";
 import { LuUser } from "react-icons/lu";
 import Navbar from "../Components/Navbar";
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import {
+  arrayRemove,
+  arrayUnion,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  onSnapshot,
+  updateDoc,
+} from "firebase/firestore";
 import { auth, db } from "../../Firebase";
 import CreatePost from "../Components/CreatePost";
 import { FaRegComment, FaRegHeart, FaRetweet, FaUser } from "react-icons/fa6";
@@ -15,18 +24,36 @@ import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import { BsBookmark, BsUpload } from "react-icons/bs";
 
 import { onAuthStateChanged } from "firebase/auth";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 const Home = () => {
   const [userList, setUserList] = useState([]);
   const [currentUser, setCurrentUser] = useState([]);
   const [allUserPosts, setAllUserPosts] = useState(null);
   const [isFetching, setIsFetching] = useState(false);
 
+  //handle Post like
+  const handlePostLike = async (id, isLiked) => {
+    const postRef = doc(db, "posts", id);
+
+    try {
+      if (isLiked) {
+        await updateDoc(postRef, { like: arrayRemove(auth.currentUser.uid) });
+      } else {
+        await updateDoc(postRef, {
+          like: arrayUnion(auth.currentUser.uid),
+        });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         const docRef = doc(db, "users", user.uid);
         const docSnap = await getDoc(docRef);
-        console.log("this is doc Snap", docSnap);
+
         if (docSnap.exists()) {
           setCurrentUser(docSnap.data());
         }
@@ -41,15 +68,16 @@ const Home = () => {
       setIsFetching(true);
       try {
         const docsRef = collection(db, "posts");
-        const docsSnap = await getDocs(docsRef);
-        console.log("these are all user posts", docsSnap);
-        const posts = docsSnap.docs.map((items) => {
-          return {
-            postId: items.id,
-            ...items.data(),
-          };
+        // const docsSnap = await getDocs(docsRef);
+        const unsubscribe = onSnapshot(docsRef, (snapshot) => {
+          const posts = snapshot.docs.map((doc) => {
+            return {
+              postId: doc.id,
+              ...doc.data(),
+            };
+          });
+          setAllUserPosts(posts);
         });
-        setAllUserPosts(posts);
       } catch (err) {
         console.log(err);
       } finally {
@@ -57,6 +85,7 @@ const Home = () => {
       }
     };
     fetchAllUsersPosts();
+    () => unsubscribe();
   }, []);
   if (isFetching)
     return (
@@ -69,9 +98,11 @@ const Home = () => {
       {/* <CreatePost currentUser={currentUser} /> */}
       <h1>All user Posts</h1>
       {allUserPosts?.map((items) => {
+        const isLiked = items.like.includes(currentUser?.uid);
+
         return (
           <div
-            key={items.id}
+            key={items.postId}
             className="flex gap-3 px-3 py-6 border-b border-gray-200 hover:bg-gray-100/50 transition-colors cursor-pointer w-full"
           >
             {/* Left: Profile Image */}
@@ -140,11 +171,18 @@ const Home = () => {
 
                 {/* Like */}
                 <div className="flex items-center gap-2 group">
-                  <div className="p-2 group-hover:bg-pink-100/50 group-hover:text-pink-500 rounded-full transition-all">
-                    <FaRegHeart className="text-[16px]" />
+                  <div
+                    onClick={() => handlePostLike(items.postId, isLiked)}
+                    className="p-2 group-hover:bg-pink-100/50 group-hover:text-pink-500 rounded-full transition-all"
+                  >
+                    {isLiked ? (
+                      <AiFillHeart className="text-red-500 text-2xl" /> // Red Dil
+                    ) : (
+                      <AiOutlineHeart className="text-2xl" /> // Khali Dil
+                    )}
                   </div>
                   <span className="text-[13px] group-hover:text-pink-500">
-                    {items.like?.length || "54K"}
+                    {items.like?.length || "0"}
                   </span>
                 </div>
 

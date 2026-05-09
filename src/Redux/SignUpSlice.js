@@ -19,7 +19,7 @@ const signUpUser = createAsyncThunk(
         password,
       );
       const user = userCredentials.user;
-      console.log("this is user", user);
+
       //   creating user document in fireStore
       await setDoc(doc(db, "users", user.uid), {
         uid: user.uid,

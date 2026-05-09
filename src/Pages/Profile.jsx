@@ -35,7 +35,6 @@ const Profile = () => {
   const [bannerImageUrl, setBannerImageUrl] = useState(null);
 
   const param = useParams();
-  console.log("this is param", param);
 
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.user.user);
@@ -141,7 +140,7 @@ const Profile = () => {
       try {
         // user
         const UserId = param.uid || auth.currentUser?.uid;
-        console.log("this is user from fetch", UserId);
+
         if (!UserId) return;
         const docRef = doc(db, "users", UserId);
         const docSnap = await getDoc(docRef);
@@ -387,7 +386,7 @@ const Profile = () => {
                 <div className="h-4 w-32 bg-gray-200 rounded-md"></div>
               </div>
               {/* Button */}
-              <div className="h-10 w-32 bg-gray-300 rounded-full"></div>
+              {/* <div className="h-10 w-32 bg-gray-300 rounded-full"></div> */}
             </div>
 
             {/* Bio/Stats Skeleton */}

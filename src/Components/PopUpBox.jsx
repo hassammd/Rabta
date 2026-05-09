@@ -3,13 +3,11 @@ import { db } from "../../Firebase";
 import { doc, updateDoc } from "firebase/firestore";
 
 const PopUpBox = ({ setIsBoxActive, currentUser }) => {
-  console.log("this is user Data from popup:", currentUser);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [bio, setBio] = useState("");
   const [loading, setLoading] = useState(false);
 
-  console.log("this is current user");
   useEffect(() => {
     if (currentUser) {
       setFirstName(currentUser.firstName);
