@@ -22,6 +22,9 @@ const userSlice = createSlice({
     updateBannerImage: (state, action) => {
       state.user.bannerPic = action.payload;
     },
+    // userPosts: (state, action)=>{
+
+    // }
   },
 });
 

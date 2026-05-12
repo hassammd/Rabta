@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { FaCamera, FaUser } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import { auth, db } from "../../Firebase";
@@ -7,6 +7,7 @@ import {
   doc,
   getDoc,
   getDocs,
+  onSnapshot,
   query,
   updateDoc,
   where,
@@ -22,6 +23,7 @@ import button from "daisyui/components/button";
 import { setUser, updateBannerImage } from "../Redux/userSlice";
 import { RxCross2 } from "react-icons/rx";
 import { useParams } from "react-router";
+import PostCard from "../Components/PostCard";
 
 const Profile = () => {
   // const [currentUser, setcurrentUser] = useState({});
@@ -33,11 +35,17 @@ const Profile = () => {
   const [bannerImageLoading, setBannerImageLoading] = useState(false);
   const [previewLink, setPreviewLink] = useState("");
   const [bannerImageUrl, setBannerImageUrl] = useState(null);
+  const [currentUserPosts, setCurrentUserPosts] = useState([]);
 
+  const alluserPostID = useSelector(
+    (state) => state.allUsers.allUsersPostisIds,
+  );
   const param = useParams();
 
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.user.user);
+  console.log("this is current User", currentUser);
+  console.log("thes are current user posts", currentUserPosts);
 
   //upload banner image on Cloudinary
   const bannerImageUpload = async () => {
@@ -155,6 +163,32 @@ const Profile = () => {
     };
     fetchcurrentUser();
   }, [param.uid]);
+
+  //current user's Posts
+
+  useEffect(() => {
+    const CurrentUsersPostHandler = async () => {
+      if (!currentUser) return;
+      const userId = auth.currentUser.uid;
+      const targetId = param?.uid || currentUser?.uid;
+      try {
+        const postsRef = collection(db, "posts");
+        console.log("thisis adsfasdfdasdf", postsRef);
+        const q = query(postsRef, where("uid", "==", targetId));
+        const unsubscribe = await onSnapshot(q, (querySnapShot) => {
+          const userPosts = querySnapShot.docs.map((doc) => ({
+            postId: doc.id,
+            ...doc.data(),
+          }));
+          setCurrentUserPosts(userPosts);
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    CurrentUsersPostHandler();
+  }, [param?.uid, currentUser?.uid]);
+
   return (
     <>
       {!loading ? (
@@ -365,6 +399,10 @@ const Profile = () => {
           </div>
 
           <CreatePost currentUser={currentUser} />
+          {currentUserPosts?.map((post) => {
+            console.log("this is postsss", post);
+            return <PostCard param={param} currentUserPostsData={post} />;
+          })}
         </div>
       ) : (
         <div className="flex flex-col h-screen rounded-sm animate-pulse">

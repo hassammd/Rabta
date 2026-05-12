@@ -36,9 +36,9 @@ const SignIn = ({ setIsLogin }) => {
   };
   return (
     <>
-      <div className="lg:w-1/3 w-full lg:py-12 p-5 mx-auto">
-        <h1 className="font-bold text-center">Rabta</h1>
-        <div className="border border-gray-100 bg-white shadow-2xl lg:py-22 lg:px-20 p-8 flex flex-col gap-3.5">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 lg:w-1/3 w-full lg:py-12 p-5 mx-auto">
+        <h1 className="font-bold text-center">Sign in to Rabta</h1>
+        <div className="border border-gray-100   lg:py-22 lg:px-20 p-8 flex flex-col gap-3.5">
           <form
             onSubmit={submitHandler}
             action=""

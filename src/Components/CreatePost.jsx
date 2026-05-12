@@ -122,7 +122,7 @@ const CreatePost = ({ currentUser }) => {
       }
     };
     fetchCurrentUserPosts();
-  }, [currentUser?.uid, imageFile]);
+  }, [currentUser?.uid, currentUserPost]);
 
   return (
     <>
@@ -204,110 +204,8 @@ const CreatePost = ({ currentUser }) => {
           </form>
         </div>
       )}
-      <div>
-        {currentUserPost?.map((post) => {
-          return (
-            <div
-              key={post.id}
-              className="flex gap-3 px-3 py-6 border-b border-gray-200 hover:bg-gray-100/50 transition-colors cursor-pointer w-full"
-            >
-              {/* Left: Profile Image */}
-              <div className="flex-shrink-0">
-                <div className="overflow-hidden h-10 w-10 rounded-full flex items-center justify-center bg-gray-300">
-                  <img src={post.profilePic} alt="" />
-                  <FaUser />
-                </div>
-              </div>
 
-              {/* Right: Content Section */}
-              <div className="flex flex-col w-full">
-                {/* Header: Name, Username, Time & More */}
-                <div className="flex items-center justify-between w-full">
-                  <div className="flex items-center gap-1 flex-wrap">
-                    <span className="font-bold text-[15px] hover:underline flex items-center gap-0.5">
-                      {post.firstName} {post.lastName}
-                      <MdVerified className="text-blue-500 text-[16px]" />
-                    </span>
-                    <span className="text-gray-500 text-[15px]">
-                      @{post.firstName?.toLowerCase()}
-                    </span>
-                    <span className="text-gray-500 text-[15px]"> </span>
-                  </div>
-                  <HiOutlineDotsHorizontal className="text-gray-500 hover:text-blue-500 transition-colors" />
-                </div>
-
-                <div className="flex flex-col gap-4">
-                  {/* Post Text */}
-                  <div className="text-[15px] text-black mt-0.5 leading-tight">
-                    {post.text}
-                    <span className="text-blue-500 hover:underline">
-                      #ufcperth
-                    </span>
-                  </div>
-                  {/* post image */}
-
-                  <div>
-                    <img className="rounded-lg" src={post.postImage} alt="" />
-                  </div>
-                </div>
-
-                {/* Icons Row */}
-                <div className="flex items-center justify-between mt-3 text-gray-500 max-w-md">
-                  {/* Comment */}
-                  <div className="flex items-center gap-2 group">
-                    <div className="p-2 group-hover:bg-blue-100/50 group-hover:text-blue-500 rounded-full transition-all">
-                      <FaRegComment className="text-[16px]" />
-                    </div>
-                    <span className="text-[13px] group-hover:text-blue-500">
-                      1.2K
-                    </span>
-                  </div>
-
-                  {/* Retweet */}
-                  <div className="flex items-center gap-2 group">
-                    <div className="p-2 group-hover:bg-green-100/50 group-hover:text-green-500 rounded-full transition-all">
-                      <FaRetweet className="text-[18px]" />
-                    </div>
-                    <span className="text-[13px] group-hover:text-green-500">
-                      3.9K
-                    </span>
-                  </div>
-
-                  {/* Like */}
-                  <div className="flex items-center gap-2 group">
-                    <div className="p-2 group-hover:bg-pink-100/50 group-hover:text-pink-500 rounded-full transition-all">
-                      <FaRegHeart className="text-[16px]" />
-                    </div>
-                    <span className="text-[13px] group-hover:text-pink-500">
-                      {post.like?.length || "54K"}
-                    </span>
-                  </div>
-
-                  {/* Views/Stats */}
-                  <div className="flex items-center gap-2 group">
-                    <div className="p-2 group-hover:bg-blue-100/50 group-hover:text-blue-500 rounded-full transition-all">
-                      <IoStatsChartOutline className="text-[16px]" />
-                    </div>
-                    <span className="text-[13px] group-hover:text-blue-500">
-                      2.5M
-                    </span>
-                  </div>
-
-                  {/* Action Icons */}
-                  <div className="flex items-center">
-                    <div className="p-2 hover:bg-blue-100/50 hover:text-blue-500 rounded-full transition-all">
-                      <BsBookmark className="text-[16px]" />
-                    </div>
-                    <div className="p-2 hover:bg-blue-100/50 hover:text-blue-500 rounded-full transition-all">
-                      <BsUpload className="text-[16px]" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+      {/* display posts */}
     </>
   );
 };
