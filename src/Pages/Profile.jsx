@@ -44,8 +44,6 @@ const Profile = () => {
 
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.user.user);
-  console.log("this is current User", currentUser);
-  console.log("thes are current user posts", currentUserPosts);
 
   //upload banner image on Cloudinary
   const bannerImageUpload = async () => {
@@ -151,17 +149,23 @@ const Profile = () => {
 
         if (!UserId) return;
         const docRef = doc(db, "users", UserId);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          dispatch(setUser(docSnap.data()));
-        }
+        // const docSnap = await getDoc(docRef);
+        const unsubscribe = onSnapshot(docRef, (snapshot) => {
+          if (snapshot.exists()) {
+            dispatch(setUser(snapshot.data()));
+          }
+        });
       } catch (err) {
         console.log(err);
       } finally {
         setLoading(false);
       }
     };
+
     fetchcurrentUser();
+    () => {
+      if (unsubscribe) unsubscribe();
+    };
   }, [param.uid]);
 
   //current user's Posts
@@ -388,12 +392,38 @@ const Profile = () => {
               <div>
                 <div className="flex items-center gap-2">
                   <LuCalendarDays /> <span>Joined</span>
-                  <span className="text-sm">{currentUser.createAt}</span>
+                  <span className="text-sm">
+                    {/* Optional Chaining aur Null check use karein */}
+                    {currentUser?.createAt
+                      ? new Date(currentUser.createAt).toLocaleDateString(
+                          "en-GB",
+                          {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                          },
+                        )
+                      : "Recently"}
+                  </span>
                 </div>
               </div>
               <div className="flex gap-3">
-                <span>0 Following</span>
-                <span>0 Followers</span>
+                <div>
+                  <span className="font-semibold">
+                    {!currentUser.following
+                      ? "0"
+                      : currentUser.following.length}
+                  </span>
+                  <span> Following</span>
+                </div>
+                <div>
+                  <span className="font-semibold">
+                    {!currentUser.followers
+                      ? "0"
+                      : currentUser.followers.length}
+                  </span>
+                  <span> followers</span>
+                </div>
               </div>
             </div>
           </div>

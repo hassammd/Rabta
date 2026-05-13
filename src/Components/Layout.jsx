@@ -10,9 +10,19 @@ import { setAllUsers } from "../Redux/allUsersSlice";
 
 const Layout = () => {
   const userList = useSelector((state) => state.allUsers.allUsers);
+  const [searchTerm, setSearchTerm] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const userFilter = userList.filter((items) => {
+    if (!items.firstName) return false;
+    const firstName = items.firstName.toLowerCase();
+    const lastName = items.lastName.toLowerCase();
+    const searchLower = searchTerm.trim().toLowerCase();
+    return firstName.includes(searchLower) || lastName.includes(searchLower);
+  });
+
+  console.log("this is search filter", userFilter);
   useEffect(() => {
     const fetchUsers = async () => {
       const user = auth.currentUser;
@@ -65,7 +75,8 @@ const Layout = () => {
                   </g>
                 </svg>
                 <input
-                  className=" "
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className=""
                   type="search"
                   required
                   placeholder="Search"
@@ -75,35 +86,39 @@ const Layout = () => {
             {/* user list   */}
 
             <div className="flex flex-col gap-4">
-              {userList.map((users) => {
-                return (
-                  <>
-                    <div
-                      onClick={() => navigate(`/profile/${users.uid}`)}
-                      class="flex items-center justify-between w-full p-2  rounded-full transition-all cursor-pointer"
-                    >
-                      <div class="flex items-center gap-3">
-                        <div class="h-12 w-12 bg-gray-200 border border-gray-300 flex items-center justify-center rounded-full overflow-hidden flex-shrink-0">
-                          {users.profilePic ? (
-                            <img src={users.profilePic} alt="" />
-                          ) : (
-                            <FaUser />
-                          )}
+              {!userFilter
+                ? userList
+                : userFilter.map((users) => {
+                    return (
+                      <>
+                        <div className="flex items-center justify-between">
+                          <div
+                            onClick={() => navigate(`/profile/${users.uid}`)}
+                            class="flex items-center justify-between w-full p-2  rounded-full transition-all cursor-pointer"
+                          >
+                            <div class="flex items-center gap-3">
+                              <div class="h-12 w-12 bg-gray-200 border border-gray-300 flex items-center justify-center rounded-full overflow-hidden flex-shrink-0">
+                                {users.profilePic ? (
+                                  <img src={users.profilePic} alt="" />
+                                ) : (
+                                  <FaUser />
+                                )}
+                              </div>
+                              <div class="flex flex-col leading-tight">
+                                <h3 class="font-bold text-sm lg:text-base truncate max-w-[100px] lg:max-w-[150px]">
+                                  {`${users.firstName} ${users.lastName}`}
+                                </h3>
+                                <span class="text-xs text-gray-500 truncate">
+                                  {users.userName}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <button className="btn rounded-full">Follow</button>
                         </div>
-                        <div class="flex flex-col leading-tight">
-                          <h3 class="font-bold text-sm lg:text-base truncate max-w-[100px] lg:max-w-[150px]">
-                            {`${users.firstName} ${users.lastName}`}
-                          </h3>
-                          <span class="text-xs text-gray-500 truncate">
-                            {users.userName}
-                          </span>
-                        </div>
-                      </div>
-                      <button className="btn rounded-full">Follow</button>
-                    </div>
-                  </>
-                );
-              })}
+                      </>
+                    );
+                  })}
             </div>
           </div>
         </div>

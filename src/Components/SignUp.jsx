@@ -73,25 +73,25 @@ const SignUp = ({ setIsLogin }) => {
 
   return (
     <>
-      <div className="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2">
-        <div className="container  flex items-center justify-between w-full lg:py-12 p-5 mx-auto">
+      <div className="absolute w-[60%] top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2">
+        <div className="   flex items-center justify-between w-full lg:py-12 p-5 mx-auto">
           <div className="lg:w-1/3 ">
             <h1 className="text-8xl font-bold text-center">Rabta</h1>
           </div>
           {/* Sign up  */}
-          <div className="lg:w-[60%]     lg:p-18 p-8 flex flex-col gap-3.5">
+          <div className=" w-[55%]  lg:p-18 p-8 flex flex-col gap-3.5">
             <form
               onSubmit={SubmitHandler}
               action=""
-              className="flex flex-col gap-2"
+              className="w-full flex flex-col gap-2"
             >
-              <div className="flex gap-3">
-                <div className="flex flex-col gap-1 w-1/2">
+              <div className="flex justify-between gap-3">
+                <div className="flex flex-col gap-1  ">
                   <label htmlFor="" className="text-sm">
                     First Name
                   </label>
                   <input
-                    className={` lg:p-2 p-1 border outline-0 ${errors.firstName ? "border-error" : "border-gray-200"}  rounded-lg `}
+                    className={` lg:p-2 p-1 border outline-0 ${errors.firstName ? "border-error" : "border-gray-200"}   rounded-full `}
                     type="text"
                     value={firstName}
                     placeholder=""
@@ -99,12 +99,12 @@ const SignUp = ({ setIsLogin }) => {
                   />
                   <p className="text-sm text-red-600">{errors.firstName}</p>
                 </div>
-                <div className="flex flex-col gap-1 w-1/2">
+                <div className="flex flex-col gap-1  ">
                   <label htmlFor="" className="text-sm">
                     Last Name
                   </label>
                   <input
-                    className={`lg:p-2 p-1 border outline-0 ${errors?.lastName ? "border-error" : "border-gray-200"}  rounded-lg `}
+                    className={`lg:p-2 p-1 border outline-0 ${errors?.lastName ? "border-error" : "border-gray-200"}   rounded-full `}
                     type="text"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
@@ -113,14 +113,14 @@ const SignUp = ({ setIsLogin }) => {
                 </div>
               </div>
 
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-1 w-full">
                 <label htmlFor="" className="text-sm">
                   Date of birth
                 </label>
                 <div className="flex gap-3">
                   <div className="w-1/3">
                     <select
-                      className={`w-full lg:text-[16px] text-sm lg:p-2 p-1 border outline-0 ${errors.day ? "border-error" : "border-gray-200"} rounded-lg `}
+                      className={`w-full lg:text-[16px] text-sm lg:p-2 p-1 border outline-0 ${errors.day ? "border-error" : "border-gray-200"}  rounded-full `}
                       name=""
                       id=""
                       value={day}
@@ -135,7 +135,7 @@ const SignUp = ({ setIsLogin }) => {
                   </div>
                   <div className="w-1/3">
                     <select
-                      className={`w-full lg:text-[16px] text-sm lg:p-2 p-1 border outline-0 ${errors.month ? "border-error" : "border-gray-200"}  rounded-lg `}
+                      className={`w-full lg:text-[16px] text-sm lg:p-2 p-1 border outline-0 ${errors.month ? "border-error" : "border-gray-200"}   rounded-full `}
                       name=""
                       id=""
                       onChange={(e) => setMonth(e.target.value)}
@@ -151,7 +151,7 @@ const SignUp = ({ setIsLogin }) => {
                   </div>
                   <div className="w-1/3">
                     <select
-                      className={`w-full lg:text-[16px] text-sm lg:p-2 p-1 border outline-0 ${errors.year ? "border-error" : "border-gray-200"}  rounded-lg `}
+                      className={`w-full lg:text-[16px] text-sm lg:p-2 p-1 border outline-0 ${errors.year ? "border-error" : "border-gray-200"}   rounded-full `}
                       name=""
                       id=""
                       onChange={(e) => setYear(e.target.value)}
@@ -172,7 +172,7 @@ const SignUp = ({ setIsLogin }) => {
                   Gender
                 </label>
                 <select
-                  className={`lg:p-2 lg:text-[16px] text-sm p-1 border outline-0 ${errors.gender ? "border-error" : "border-gray-200"}  rounded-lg `}
+                  className={`lg:p-2 lg:text-[16px] text-sm p-1 border outline-0 ${errors.gender ? "border-error" : "border-gray-200"}   rounded-full `}
                   name=""
                   id=""
                   onChange={(e) => setGender(e.target.value)}
@@ -191,7 +191,7 @@ const SignUp = ({ setIsLogin }) => {
                   Email
                 </label>
                 <input
-                  className={`lg:p-2 p-1 border outline-0 ${errors.email ? "border-error" : "border-gray-200"}  rounded-lg `}
+                  className={`lg:p-2 p-1 border outline-0 ${errors.email ? "border-error" : "border-gray-200"}   rounded-full `}
                   type="text"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -203,7 +203,7 @@ const SignUp = ({ setIsLogin }) => {
                   Mobile number
                 </label>
                 <input
-                  className={`lg:p-2 p-1 border outline-0 ${errors.phone ? "border-error" : "border-gray-200"} rounded-lg `}
+                  className={`lg:p-2 p-1 border outline-0 ${errors.phone ? "border-error" : "border-gray-200"}  rounded-full `}
                   type="number"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
@@ -216,7 +216,7 @@ const SignUp = ({ setIsLogin }) => {
                     Password
                   </label>
                   <input
-                    className={`lg:p-2 p-1 border outline-0 ${errors.password ? "border-error" : "border-gray-200"}  rounded-lg `}
+                    className={`lg:p-2 p-1 border outline-0 ${errors.password ? "border-error" : "border-gray-200"}   rounded-full `}
                     type="text"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -228,7 +228,7 @@ const SignUp = ({ setIsLogin }) => {
                     Confirm Password
                   </label>
                   <input
-                    className={`lg:p-2 p-1 border outline-0 ${errors.confirmPassword ? "border-error" : "border-gray-200"}  rounded-lg `}
+                    className={`lg:p-2 p-1 border outline-0 ${errors.confirmPassword ? "border-error" : "border-gray-200"}   rounded-full `}
                     type="text"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
@@ -241,17 +241,18 @@ const SignUp = ({ setIsLogin }) => {
               <p className="text-sm text-red-600">{errors.passwordNotMatch}</p>
               <div className="flex flex-col gap-1">
                 <input
-                  className="bg-[#3B82F6] text-white uppercase cursor-pointer lg:p-2 p-1 border outline-0 border-gray-200 rounded-lg "
+                  className="bg-[#3B82F6] text-white uppercase cursor-pointer lg:p-2 p-1 border outline-0 border-gray-200  rounded-full "
                   type="submit"
                 />
               </div>
             </form>
+            Already have an account?
             <div className="flex flex-col gap-1 ">
               <button
                 onClick={() => setIsLogin(true)}
-                className="cursor-pointer lg:p-2 p-1 border outline-0 border-gray-200 rounded-lg"
+                className="cursor-pointer lg:p-2 p-1 border outline-0 border-gray-200 rounded-full"
               >
-                I already have an account
+                Sign in
               </button>
             </div>
           </div>

@@ -2,12 +2,16 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userSignIn } from "../Redux/SignInSlice";
 import { useNavigate } from "react-router";
+import { LuEye, LuEyeClosed } from "react-icons/lu";
 
 const SignIn = ({ setIsLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errrs, setErrors] = useState({});
   const { user } = useSelector((state) => state.signIn);
+  const [showPassword, setShowPassword] = useState(false);
+
+  console.log("show password", showPassword);
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -37,17 +41,17 @@ const SignIn = ({ setIsLogin }) => {
   return (
     <>
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 lg:w-1/3 w-full lg:py-12 p-5 mx-auto">
-        <h1 className="font-bold text-center">Sign in to Rabta</h1>
-        <div className="border border-gray-100   lg:py-22 lg:px-20 p-8 flex flex-col gap-3.5">
+        <h1 className="font-bold text-center text-2xl">Sign in to Rabta</h1>
+        <div className="    lg:py-22 lg:px-20 p-8 flex flex-col gap-3.5">
           <form
             onSubmit={submitHandler}
             action=""
             className="flex flex-col gap-5"
           >
             <div className="flex flex-col gap-1">
-              <label className="text-sm">Email</label>
+              <label className="text-sm lg:px-4 ">Email</label>
               <input
-                className={`lg:p-2 p-1 border outline-0 ${errrs.email ? "border-error" : "border-gray-200"}  rounded-lg`}
+                className={`lg:px-4 lg:py-2 p-1 border outline-0 ${errrs.email ? "border-error" : "border-gray-200"}   rounded-full`}
                 type="text"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -56,13 +60,21 @@ const SignIn = ({ setIsLogin }) => {
             </div>
 
             <div className="flex flex-col gap-1">
-              <label className="text-sm">Password</label>
-              <input
-                className={`lg:p-2 p-1 border outline-0 ${errrs.password ? "border-error" : "border-gray-200"}  rounded-lg`}
-                type="text"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
+              <label className="text-sm lg:px-4 ">Password</label>
+              <div className="relative">
+                <input
+                  className={`lg:px-4 lg:py-2 p-1 w-full border outline-0 ${errrs.password ? "border-error" : "border-gray-200"}    rounded-full`}
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <span
+                  className="absolute top-3 right-3 text-gray-400 cursor-pointer"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <LuEyeClosed /> : <LuEye />}
+                </span>
+              </div>
               <p className="text-sm text-red-600">{errrs.password}</p>
             </div>
 
@@ -70,18 +82,24 @@ const SignIn = ({ setIsLogin }) => {
 
             <div className="flex flex-col gap-1">
               <input
-                className="bg-[#3B82F6] text-white uppercase cursor-pointer lg:p-2 p-1 border outline-0 border-gray-200 rounded-lg"
+                className="bg-[#3B82F6] text-white uppercase cursor-pointer lg:p-2 p-1 border outline-0 border-gray-200  rounded-full"
                 type="submit"
                 value={"login"}
               />
             </div>
           </form>
-          <button
-            onClick={() => setIsLogin(false)}
-            className="cursor-pointer lg:p-2 p-1 border outline-0 border-gray-200 rounded-lg"
-          >
+          <p className="text-center">
+            Don't have an account?
+            <span
+              className="text-blue-600 ml-2 cursor-pointer"
+              onClick={() => setIsLogin(false)}
+            >
+              Sign up
+            </span>
+          </p>
+          {/* <button className="cursor-pointer lg:p-2 p-1 border outline-0 border-gray-200  rounded-full">
             Create new account
-          </button>
+          </button> */}
         </div>
       </div>
     </>

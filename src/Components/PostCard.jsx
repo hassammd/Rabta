@@ -16,11 +16,6 @@ const PostCard = ({ currentUserPostsData }) => {
   const currentUser = auth.currentUser;
   const isLiked = currentUserPostsData.like.includes(currentUser?.uid);
 
-  console.log(
-    "this is current user post data from CCCCCCCCCCCCCC",
-    currentUserPostsData,
-  );
-
   const loggedInUser = useSelector((state) => state.user.user);
   const alluserPostID = useSelector(
     (state) => state.allUsers.allUsersPostisIds,
@@ -110,7 +105,7 @@ const PostCard = ({ currentUserPostsData }) => {
               <span className="text-blue-500 hover:underline">#ufcperth</span>
             </div>
             {/* post image */}
-            <div>
+            <div className="w-[50%]">
               <img src={currentUserPostsData.postImage} alt="" />
             </div>
           </div>
