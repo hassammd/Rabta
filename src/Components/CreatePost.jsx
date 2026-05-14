@@ -146,7 +146,7 @@ const CreatePost = ({ currentUser }) => {
               <div className="w-full">
                 <textarea
                   onChange={(e) => setPostText(e.target.value)}
-                  className="p-3 border-0  resize-none outline-0 border-gray-300 w-full"
+                  className="text-sm p-3 border-0 resize-none outline-0 border-gray-300 w-full"
                   rows="3"
                   name=""
                   id=""
@@ -171,13 +171,13 @@ const CreatePost = ({ currentUser }) => {
                 />
                 <label
                   htmlFor="post-image"
-                  className="cursor-pointer text-3xl hover:bg-blue-100/50 hover:text-blue-500 rounded-full transition-all"
+                  className="cursor-pointer lg:text-3xl hover:bg-blue-100/50 hover:text-blue-500 rounded-full transition-all"
                 >
                   <FiImage />
                 </label>
               </div>
               <input
-                className={`${postText || imageFile ? "bg-blue-500 text-white" : "bg-gray-300 disabled"} border cursor-pointer border-gray-300 rounded-4xl px-5 py-2`}
+                className={`${postText || imageFile ? "bg-blue-500 text-white" : "bg-gray-200 disabled"} border cursor-pointer border-gray-100 rounded-4xl lg:px-5 lg:py-2 px-3.5 py-1.5 text-sm`}
                 type="submit"
                 value={"Post"}
               />

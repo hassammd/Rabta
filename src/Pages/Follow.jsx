@@ -44,11 +44,15 @@ const Follow = () => {
 
   return (
     <>
-      <h1>Suggested for you</h1>
+      <div className="bg-gray-100  border-b-1 border-gray-300 px-3.5 py-4">
+        <span className="text-black font-semibold text-sm">
+          Suggested for you
+        </span>
+      </div>
       {userList?.map((users) => {
         return (
           <>
-            <div className="flex items-center w-1/2">
+            <div className="  flex items-center lg:w-1/2">
               <div
                 onClick={() => navigate(`/profile/${users.uid}`)}
                 className="flex items-center justify-between w-full p-2  rounded-full transition-all cursor-pointer"
@@ -69,7 +73,7 @@ const Follow = () => {
               </div>
               <button
                 onClick={() => followHandler(users.uid)}
-                className={`btn rounded-full ${isFollowBtnActive ? "bg-black text-white" : ""}`}
+                className={`btn rounded-full ${isFollowBtnActive ? "bg-black text-white" : ""} text-sm`}
               >
                 Follow
               </button>

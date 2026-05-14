@@ -36,6 +36,7 @@ const Home = () => {
   const [commentText, setCommentText] = useState("");
   const [expandedPostId, setExpandedPostId] = useState(null);
   const [visibleComments, setVisibleComments] = useState(3);
+  const [isMobileNav, setIsMobileNav] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -149,7 +150,11 @@ const Home = () => {
   return (
     <>
       {/* <CreatePost currentUser={currentUser} /> */}
-      <h1>All user Posts</h1>
+      {/* <h1>All user Posts</h1>  */}
+      <div className="hidden lg:block flex justify-between items-center bg-gray-100 border-b-1 border-gray-300 px-3.5 py-4">
+        <h1>Rabta</h1>
+        <span className="text-black font-semibold">For You</span>
+      </div>
 
       {allUserPosts?.map((items) => {
         const isLiked = items.like.includes(currentUser?.uid);
@@ -176,66 +181,55 @@ const Home = () => {
                 {/* Header: Name, Username, Time & More */}
                 <div className="flex items-center justify-between w-full">
                   <div className="flex items-center gap-1 flex-wrap">
-                    <span className="font-bold text-[15px] hover:underline flex items-center gap-0.5">
+                    <span className="font-bold lg:text-[15px] text-sm hover:underline flex items-center gap-0.5">
                       {items.firstName} {items.lastName}
                       <MdVerified className="text-blue-500 text-[16px]" />
                     </span>
-                    <span className="text-gray-500 text-[15px]">
+                    <span className="text-gray-500 lg:text-[15px] text-sm">
                       @{items.firstName?.toLowerCase()}
                     </span>
-                    <span className="text-gray-500 text-[15px]"> </span>
+                    <span className="text-gray-500 lg:text-[15px] text-sm">
+                      {" "}
+                    </span>
                   </div>
                   <HiOutlineDotsHorizontal className="text-gray-500 hover:text-blue-500 transition-colors" />
                 </div>
 
                 <div className="flex flex-col gap-4">
                   {/* Post Text */}
-                  <div className="text-[15px] text-black mt-0.5 leading-tight">
+                  <div className="lg:text-[15px] text-sm text-black mt-2 leading-tight">
                     {items.text}
-                    <span className="text-blue-500 hover:underline">
-                      #ufcperth
-                    </span>
                   </div>
                   {/* post image */}
                   <div>
-                    <img src={items.postImage} alt="" />
+                    <img className="rounded-xl" src={items.postImage} alt="" />
                   </div>
                 </div>
 
                 {/* Icons Row */}
-                <div className="flex items-center justify-between mt-3 text-gray-500 max-w-md">
+                <div className="flex items-center gap-2  mt-3 text-gray-500 max-w-md">
                   {/* Comment */}
-                  <div className="flex items-center gap-2 group">
+                  <div className="flex items-center lg:gap-2 gap-0 group">
                     <div
                       onClick={() => {
                         setExpandedPostId(
                           expandedPostId == items.postId ? null : items.postId,
                         );
                       }}
-                      className="p-2 group-hover:bg-blue-100/50 group-hover:text-blue-500 rounded-full transition-all"
+                      className="lg:p-2 p-1 group-hover:bg-blue-100/50 group-hover:text-blue-500 rounded-full transition-all"
                     >
-                      <FaRegComment className="text-[16px]" />
+                      <FaRegComment className="lg:text-[16px]" />
                     </div>
                     <span className="text-[13px] group-hover:text-blue-500">
                       1.2K
                     </span>
                   </div>
 
-                  {/* Retweet */}
-                  <div className="flex items-center gap-2 group">
-                    <div className="p-2 group-hover:bg-green-100/50 group-hover:text-green-500 rounded-full transition-all">
-                      <FaRetweet className="text-[18px]" />
-                    </div>
-                    <span className="text-[13px] group-hover:text-green-500">
-                      3.9K
-                    </span>
-                  </div>
-
                   {/* Like */}
-                  <div className="flex items-center gap-2 group">
+                  <div className="flex items-center lg:gap-2 gap-0.5 group">
                     <div
                       onClick={() => handlePostLike(items.postId, isLiked)}
-                      className="p-2 group-hover:bg-pink-100/50 group-hover:text-pink-500 rounded-full transition-all"
+                      className="lg:p-2 p-1 group-hover:bg-pink-100/50 group-hover:text-pink-500 rounded-full transition-all"
                     >
                       {isLiked ? (
                         <AiFillHeart className="text-red-500 text-2xl" /> // Red heart
@@ -247,26 +241,6 @@ const Home = () => {
                       {items.like?.length || "0"}
                     </span>
                   </div>
-
-                  {/* Views/Stats */}
-                  <div className="flex items-center gap-2 group">
-                    <div className="p-2 group-hover:bg-blue-100/50 group-hover:text-blue-500 rounded-full transition-all">
-                      <IoStatsChartOutline className="text-[16px]" />
-                    </div>
-                    <span className="text-[13px] group-hover:text-blue-500">
-                      2.5M
-                    </span>
-                  </div>
-
-                  {/* Action Icons */}
-                  <div className="flex items-center">
-                    <div className="p-2 hover:bg-blue-100/50 hover:text-blue-500 rounded-full transition-all">
-                      <BsBookmark className="text-[16px]" />
-                    </div>
-                    <div className="p-2 hover:bg-blue-100/50 hover:text-blue-500 rounded-full transition-all">
-                      <BsUpload className="text-[16px]" />
-                    </div>
-                  </div>
                 </div>
                 {expandedPostId === items.postId && (
                   <form
@@ -276,14 +250,14 @@ const Home = () => {
                     <div className="relative">
                       <input
                         onChange={(e) => setCommentText(e.target.value)}
-                        className=" border-gray-200 px-7 py-2 outline-0 rounded-full w-full"
+                        className=" border-gray-200 lg:px-7 lg:py-2 px-4 py-2 text-sm outline-0 rounded-full w-full"
                         type="text"
                         placeholder="Enter Your Comment"
                         value={commentText}
                       />
                       {commentText && (
                         <button
-                          className="absolute right-5 top-2 text-white bg-blue-400 px-3 rounded-full cursor-pointer"
+                          className=" absolute lg:right-5 lg:top-2 right-5 top-3 text-white bg-blue-400 py-0 px-3 text-sm rounded-full cursor-pointer"
                           type="submit"
                         >
                           comment
@@ -355,9 +329,7 @@ const Home = () => {
                         </button>
                       </div>
                     ) : (
-                      <p className="text-gray-400 text-sm text-center py-2">
-                        No comments yet.
-                      </p>
+                      <p className="text-gray-400 text-sm text-center py-2"></p>
                     )}
                   </div>
                 )}

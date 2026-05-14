@@ -21,6 +21,7 @@ body {
 @layer base {
   h1 {
     font-size: 40px;
+
     color: rgb(83, 100, 113);
   }
   h2 {
@@ -39,7 +40,7 @@ body {
   }
 }
 .container {
-  max-width: 1440px;
+  max-width: 1250px;
   margin: 0 auto;
   padding: 0 15px;
 }

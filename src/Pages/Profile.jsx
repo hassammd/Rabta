@@ -200,7 +200,7 @@ const Profile = () => {
           {/* banner */}
 
           <div>
-            <div className=" relative flex items-center justify-center bg-gray-300 h-[250px]">
+            <div className=" relative flex items-center justify-center bg-gray-300 lg:h-[250px] h-[140px]">
               {/* banner image */}
               <input
                 onChange={(e) => {
@@ -271,12 +271,12 @@ const Profile = () => {
                 id="profile_image"
                 type="file"
               />
-              <label className=" cursor-pointer flex items-end  gap-4 absolute -bottom-9 left-9">
+              <label className=" cursor-pointer flex items-end  gap-4 absolute lg:-bottom-9 lg:left-9 left-3 -bottom-8">
                 <div
                   onClick={() =>
                     document.getElementById("my_modal_2").showModal()
                   }
-                  className="overflow-hidden border border-gray-300  h-30 w-30 bg-gray-100 flex items-center justify-center rounded-full"
+                  className="overflow-hidden border border-gray-300  lg:h-30 lg:w-30 h-20 w-20 bg-gray-100 flex items-center justify-center rounded-full"
                 >
                   {currentUser.profilePic ? (
                     <img
@@ -309,7 +309,7 @@ const Profile = () => {
                           onClick={() =>
                             document.getElementById("my_modal_2").showModal()
                           }
-                          className="overflow-hidden border border-gray-300  h-30 w-30 bg-gray-100 flex items-center justify-center rounded-full"
+                          className="overflow-hidden border border-gray-300  lg:h-30 lg:w-30 h-20 w-20 bg-gray-100 flex items-center justify-center rounded-full"
                         >
                           {!profileImageLoading ? (
                             <img
@@ -374,7 +374,7 @@ const Profile = () => {
               {!param.uid && (
                 <button
                   onClick={() => setIsBoxActive(!isBoxActive)}
-                  className="btn rounded-full"
+                  className="btn rounded-full text-sm"
                 >
                   Set up profile
                 </button>
@@ -391,9 +391,9 @@ const Profile = () => {
             <div className="flex flex-col gap-4">
               <div>
                 <div className="flex items-center gap-2">
-                  <LuCalendarDays /> <span>Joined</span>
+                  <LuCalendarDays /> <span className="text-sm">Joined</span>
                   <span className="text-sm">
-                    {/* Optional Chaining aur Null check use karein */}
+                    {/* Optional Chaining aur Null check  */}
                     {currentUser?.createAt
                       ? new Date(currentUser.createAt).toLocaleDateString(
                           "en-GB",
@@ -409,20 +409,20 @@ const Profile = () => {
               </div>
               <div className="flex gap-3">
                 <div>
-                  <span className="font-semibold">
+                  <span className="font-semibold text-sm">
                     {!currentUser.following
                       ? "0"
                       : currentUser.following.length}
                   </span>
-                  <span> Following</span>
+                  <span className="text-sm"> Following</span>
                 </div>
                 <div>
-                  <span className="font-semibold">
+                  <span className="font-semibold text-sm">
                     {!currentUser.followers
                       ? "0"
                       : currentUser.followers.length}
                   </span>
-                  <span> followers</span>
+                  <span className="text-sm"> followers</span>
                 </div>
               </div>
             </div>
@@ -430,7 +430,6 @@ const Profile = () => {
 
           <CreatePost currentUser={currentUser} />
           {currentUserPosts?.map((post) => {
-            console.log("this is postsss", post);
             return <PostCard param={param} currentUserPostsData={post} />;
           })}
         </div>

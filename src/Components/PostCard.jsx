@@ -86,11 +86,11 @@ const PostCard = ({ currentUserPostsData }) => {
           {/* Header: Name, Username, Time & More */}
           <div className="flex  items-center justify-between w-full">
             <div className="flex  items-center gap-1 flex-wrap">
-              <span className="font-bold text-[15px] hover:underline flex  items-center gap-0.5">
+              <span className="font-bold lg:text-[15px] text-sm hover:underline flex  items-center gap-0.5">
                 {currentUserPostsData.firstName} {currentUserPostsData.lastName}
                 <MdVerified className="text-blue-500 text-[16px]" />
               </span>
-              <span className="text-gray-500 text-[15px]">
+              <span className="text-gray-500 lg:text-[15px] text-sm">
                 @{currentUserPostsData.firstName?.toLowerCase()}
               </span>
               <span className="text-gray-500 text-[15px]"> </span>
@@ -100,18 +100,22 @@ const PostCard = ({ currentUserPostsData }) => {
 
           <div className="flex flex-col gap-4">
             {/* Post Text */}
-            <div className="text-[15px] text-black mt-0.5 leading-tight">
+            <div className="lg:text-[15px] text-sm  text-black mt-0.5 leading-tight">
               {currentUserPostsData.text}
               <span className="text-blue-500 hover:underline">#ufcperth</span>
             </div>
             {/* post image */}
-            <div className="w-[50%]">
-              <img src={currentUserPostsData.postImage} alt="" />
+            <div className="lg:w-[50%] ">
+              <img
+                className="rounded-2xl"
+                src={currentUserPostsData.postImage}
+                alt=""
+              />
             </div>
           </div>
 
           {/* Icons Row */}
-          <div className="flex  items-center justify-between mt-3 text-gray-500 max-w-md">
+          <div className="flex items-center gap-2 mt-3 text-gray-500 max-w-md">
             {/* Comment */}
             <div className="flex  items-center gap-2 group">
               <div
@@ -122,22 +126,12 @@ const PostCard = ({ currentUserPostsData }) => {
                       : currentUserPostsData.postId,
                   );
                 }}
-                className="p-2 group-hover:bg-blue-100/50 group-hover:text-blue-500 rounded-full transition-all"
+                className="lg:p-2 p-0 group-hover:bg-blue-100/50 group-hover:text-blue-500 rounded-full transition-all"
               >
                 <FaRegComment className="text-[16px]" />
               </div>
               <span className="text-[13px] group-hover:text-blue-500">
                 {currentUserPostsData.comments.length}
-              </span>
-            </div>
-
-            {/* Retweet */}
-            <div className="flex  items-center gap-2 group">
-              <div className="p-2 group-hover:bg-green-100/50 group-hover:text-green-500 rounded-full transition-all">
-                <FaRetweet className="text-[18px]" />
-              </div>
-              <span className="text-[13px] group-hover:text-green-500">
-                3.9K
               </span>
             </div>
 
@@ -147,7 +141,7 @@ const PostCard = ({ currentUserPostsData }) => {
                 onClick={() =>
                   handlePostLike(currentUserPostsData.postId, isLiked)
                 }
-                className="p-2 group-hover:bg-pink-100/50 group-hover:text-pink-500 rounded-full transition-all"
+                className="lg:p-2 p-0 group-hover:bg-pink-100/50 group-hover:text-pink-500 rounded-full transition-all"
               >
                 {isLiked ? (
                   <AiFillHeart className="text-red-500 text-2xl" /> // Red Dil
@@ -160,25 +154,7 @@ const PostCard = ({ currentUserPostsData }) => {
               </span>
             </div>
 
-            {/* Views/Stats */}
-            <div className="flex  items-center gap-2 group">
-              <div className="p-2 group-hover:bg-blue-100/50 group-hover:text-blue-500 rounded-full transition-all">
-                <IoStatsChartOutline className="text-[16px]" />
-              </div>
-              <span className="text-[13px] group-hover:text-blue-500">
-                2.5M
-              </span>
-            </div>
-
             {/* Action Icons */}
-            <div className="flex  items-center">
-              <div className="p-2 hover:bg-blue-100/50 hover:text-blue-500 rounded-full transition-all">
-                <BsBookmark className="text-[16px]" />
-              </div>
-              <div className="p-2 hover:bg-blue-100/50 hover:text-blue-500 rounded-full transition-all">
-                <BsUpload className="text-[16px]" />
-              </div>
-            </div>
           </div>
           {expandedPostId === currentUserPostsData.postId && (
             <form
@@ -190,7 +166,7 @@ const PostCard = ({ currentUserPostsData }) => {
               <div className="relative">
                 <input
                   onChange={(e) => setCommentText(e.target.value)}
-                  className=" border-gray-200 px-7 py-2 outline-0 rounded-full w-full"
+                  className=" border-gray-200 lg:px-7 lg:py-2 px-5 py-2 text-sm outline-0 rounded-full w-full"
                   type="text"
                   placeholder="Enter Your Comment"
                   value={commentText}
