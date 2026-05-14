@@ -18,6 +18,20 @@ const SignUp = ({ setIsLogin }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -75,14 +89,14 @@ const SignUp = ({ setIsLogin }) => {
 
   return (
     <>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-9 lg:flex-row items-center justify-center w-full lg:py-12 p-5 mx-auto">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-9 lg:flex-row items-center justify-center w-full xl:w-[70%] lg:py-12 p-5 mx-auto">
         {/* left side */}
-        <div className="flex items-center justify-center lg:w-[30%] md:w-1/3 ">
+        <div className="flex items-center justify-center lg:w-[30%]  md:w-1/3 ">
           <img className="lg:w-[50%] w-[100px]" src={logo} alt="" />
         </div>
         {/* right side */}
         {/* Sign up  */}
-        <div className="lg:w-[60%] md:w-[70%] w-full lg:p-18  flex flex-col gap-3.5">
+        <div className="lg:w-[60%] xl:w-1/2 md:w-[70%] w-full lg:p-18  flex flex-col gap-3.5">
           <form
             onSubmit={SubmitHandler}
             action=""
@@ -100,7 +114,7 @@ const SignUp = ({ setIsLogin }) => {
                   placeholder=""
                   onChange={(e) => setFirstName(e.target.value)}
                 />
-                <p className="text-sm text-red-600">{errors.firstName}</p>
+                <p className="text-[11px] text-red-600">{errors.firstName}</p>
               </div>
               <div className="flex flex-col gap-1 w-[48%] ">
                 <label htmlFor="" className="text-sm">
@@ -112,7 +126,7 @@ const SignUp = ({ setIsLogin }) => {
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                 />
-                <p className="text-sm text-red-600">{errors.lastName}</p>
+                <p className="text-[11px] text-red-600">{errors.lastName}</p>
               </div>
             </div>
 
@@ -132,16 +146,16 @@ const SignUp = ({ setIsLogin }) => {
                     <option hidden value="">
                       Day
                     </option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">4</option>
+                    {[...Array(31)].map((items, index) => (
+                      <option value={index + 1}>{index + 1}</option>
+                    ))}
                   </select>
                   <MdOutlineKeyboardArrowDown className="pointer-events-none absolute top-3 right-3" />
-                  <p className="text-sm text-red-600">{errors.day}</p>
+                  <p className="text-[11px] text-red-600">{errors.day}</p>
                 </div>
                 <div className=" w-1/3 relative">
                   <select
-                    className={`appearance-none w-full lg:text-[16px] text-sm   py-2 px-3 text border outline-0 ${errors.month ? "border-error" : "border-gray-200"}   rounded-full `}
+                    className={` appearance-none w-full lg:text-[16px] text-sm   py-2 px-3 text border rounded-full outline-0 ${errors.month ? "border-error" : "border-gray-200"}   rounded-full `}
                     name=""
                     id=""
                     onChange={(e) => setMonth(e.target.value)}
@@ -149,11 +163,11 @@ const SignUp = ({ setIsLogin }) => {
                     <option hidden value="">
                       Month
                     </option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
+                    {months.map((items) => (
+                      <option value={items}>{items}</option>
+                    ))}
                   </select>
-                  <p className="text-sm text-red-600">{errors.month}</p>
+                  <p className="text-[11px] text-red-600">{errors.month}</p>
                   <MdOutlineKeyboardArrowDown className="pointer-events-none absolute top-3 right-3" />
                 </div>
                 <div className="w-1/3 relative">
@@ -170,7 +184,7 @@ const SignUp = ({ setIsLogin }) => {
                     <option value="2021">2021</option>
                     <option value="2022">2022</option>
                   </select>
-                  <p className="text-sm text-red-600">{errors.year}</p>
+                  <p className="text-[11px] text-red-600">{errors.year}</p>
                   <MdOutlineKeyboardArrowDown className="pointer-events-none absolute top-3 right-3" />
                 </div>
               </div>
@@ -192,7 +206,7 @@ const SignUp = ({ setIsLogin }) => {
                 <option value="Female">Female</option>
                 <option value="custom">Cusotm</option>
               </select>
-              <p className="text-sm text-red-600">{errors.gender}</p>
+              <p className="text-[11px] text-red-600">{errors.gender}</p>
               <MdOutlineKeyboardArrowDown className="pointer-events-none absolute top-9 right-3" />
             </div>
             <div className="flex flex-col gap-1">
@@ -205,7 +219,7 @@ const SignUp = ({ setIsLogin }) => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              <p className="text-sm text-red-600">{errors.email}</p>
+              <p className="text-[11px] text-red-600">{errors.email}</p>
             </div>
             <div className="flex flex-col gap-1">
               <label htmlFor="" className="text-sm">
@@ -217,7 +231,7 @@ const SignUp = ({ setIsLogin }) => {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
               />
-              <p className="text-sm text-red-600">{errors.phone}</p>
+              <p className="text-[11px] text-red-600">{errors.phone}</p>
             </div>
             <div className="flex gap-3">
               <div className="flex flex-col gap-1 w-[48%]">
@@ -230,7 +244,7 @@ const SignUp = ({ setIsLogin }) => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-                <p className="text-sm text-red-600">{errors.password}</p>
+                <p className="text-[11px] text-red-600">{errors.password}</p>
               </div>
               <div className="flex flex-col gap-1 w-[48%]">
                 <label htmlFor="" className="text-sm">
@@ -242,10 +256,14 @@ const SignUp = ({ setIsLogin }) => {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 />
-                <p className="text-sm text-red-600">{errors.confirmPassword}</p>
+                <p className="text-[11px] text-red-600">
+                  {errors.confirmPassword}
+                </p>
               </div>
             </div>
-            <p className="text-sm text-red-600">{errors.passwordNotMatch}</p>
+            <p className="text-[11px] text-red-600">
+              {errors.passwordNotMatch}
+            </p>
             <div className="flex flex-col gap-1">
               <input
                 className="bg-[#3B82F6] text-white uppercase cursor-pointer   py-2 px-4 border outline-0 border-gray-200  rounded-full "
