@@ -4,6 +4,7 @@ import { signUpUser } from "../Redux/SignUpSlice";
 import { last } from "firebase/firestore/pipelines";
 import { useNavigate } from "react-router";
 import logo from "../assets/Rabta-logo.png";
+import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 
 const SignUp = ({ setIsLogin }) => {
   const [firstName, setFirstName] = useState("");
@@ -74,14 +75,14 @@ const SignUp = ({ setIsLogin }) => {
 
   return (
     <>
-      <div className="flex flex-col md:flex-row items-center lg:justify-between w-full lg:py-12 p-5 mx-auto">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-9 lg:flex-row items-center justify-center w-full lg:py-12 p-5 mx-auto">
         {/* left side */}
-        <div className="flex items-center justify-center lg:w-1/3 md:w-1/3 ">
-          <img className="w-[100px]" src={logo} alt="" />
+        <div className="flex items-center justify-center lg:w-[30%] md:w-1/3 ">
+          <img className="lg:w-[50%] w-[100px]" src={logo} alt="" />
         </div>
         {/* right side */}
         {/* Sign up  */}
-        <div className=" lg:w-[55%] md:w-[50%] w-full lg:p-18 p-4 flex flex-col gap-3.5">
+        <div className="lg:w-[60%] md:w-[70%] w-full lg:p-18  flex flex-col gap-3.5">
           <form
             onSubmit={SubmitHandler}
             action=""
@@ -93,7 +94,7 @@ const SignUp = ({ setIsLogin }) => {
                   First Name
                 </label>
                 <input
-                  className={` lg:p-2 p-1 border outline-0 ${errors.firstName ? "border-error" : "border-gray-200"}   rounded-full `}
+                  className={`   py-2 px-4 text-sm border outline-0 ${errors.firstName ? "border-error" : "border-gray-200"}   rounded-full `}
                   type="text"
                   value={firstName}
                   placeholder=""
@@ -106,7 +107,7 @@ const SignUp = ({ setIsLogin }) => {
                   Last Name
                 </label>
                 <input
-                  className={`lg:p-2 p-1 border outline-0 ${errors?.lastName ? "border-error" : "border-gray-200"}   rounded-full `}
+                  className={`  py-2 px-4 text-sm border outline-0 ${errors?.lastName ? "border-error" : "border-gray-200"}   rounded-full `}
                   type="text"
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
@@ -120,24 +121,27 @@ const SignUp = ({ setIsLogin }) => {
                 Date of birth
               </label>
               <div className="flex gap-3">
-                <div className="w-1/3">
+                <div className="w-1/3 relative">
                   <select
-                    className={`w-full lg:text-[16px] text-sm lg:p-2 p-1 border outline-0 ${errors.day ? "border-error" : "border-gray-200"}  rounded-full `}
+                    className={` appearance-none w-full lg:text-[16px] text-sm   py-2 px-4   border outline-0 ${errors.day ? "border-error" : "border-gray-200"}  rounded-full `}
                     name=""
                     id=""
                     value={day}
                     onChange={(e) => setDay(e.target.value)}
                   >
-                    <option value="">Day</option>
+                    <option hidden value="">
+                      Day
+                    </option>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">4</option>
                   </select>
+                  <MdOutlineKeyboardArrowDown className="pointer-events-none absolute top-3 right-3" />
                   <p className="text-sm text-red-600">{errors.day}</p>
                 </div>
-                <div className="w-1/3">
+                <div className=" w-1/3 relative">
                   <select
-                    className={`w-full lg:text-[16px] text-sm lg:p-2 p-1 border outline-0 ${errors.month ? "border-error" : "border-gray-200"}   rounded-full `}
+                    className={`appearance-none w-full lg:text-[16px] text-sm   py-2 px-3 text border outline-0 ${errors.month ? "border-error" : "border-gray-200"}   rounded-full `}
                     name=""
                     id=""
                     onChange={(e) => setMonth(e.target.value)}
@@ -150,10 +154,11 @@ const SignUp = ({ setIsLogin }) => {
                     <option value="3">3</option>
                   </select>
                   <p className="text-sm text-red-600">{errors.month}</p>
+                  <MdOutlineKeyboardArrowDown className="pointer-events-none absolute top-3 right-3" />
                 </div>
-                <div className="w-1/3">
+                <div className="w-1/3 relative">
                   <select
-                    className={`w-full lg:text-[16px] text-sm lg:p-2 p-1 border outline-0 ${errors.year ? "border-error" : "border-gray-200"}   rounded-full `}
+                    className={`appearance-none w-full lg:text-[16px]   py-2 px-3 text-sm border outline-0 ${errors.year ? "border-error" : "border-gray-200"}   rounded-full `}
                     name=""
                     id=""
                     onChange={(e) => setYear(e.target.value)}
@@ -166,15 +171,16 @@ const SignUp = ({ setIsLogin }) => {
                     <option value="2022">2022</option>
                   </select>
                   <p className="text-sm text-red-600">{errors.year}</p>
+                  <MdOutlineKeyboardArrowDown className="pointer-events-none absolute top-3 right-3" />
                 </div>
               </div>
             </div>
-            <div className="flex flex-col gap-1">
+            <div className="relative flex flex-col gap-1">
               <label htmlFor="" className="text-sm">
                 Gender
               </label>
               <select
-                className={`lg:p-2 lg:text-[16px] text-sm p-1 border outline-0 ${errors.gender ? "border-error" : "border-gray-200"}   rounded-full `}
+                className={`appearance-none   lg:text-[16px] text-sm py-2 px-4 text-sm border outline-0 ${errors.gender ? "border-error" : "border-gray-200"}   rounded-full `}
                 name=""
                 id=""
                 onChange={(e) => setGender(e.target.value)}
@@ -187,13 +193,14 @@ const SignUp = ({ setIsLogin }) => {
                 <option value="custom">Cusotm</option>
               </select>
               <p className="text-sm text-red-600">{errors.gender}</p>
+              <MdOutlineKeyboardArrowDown className="pointer-events-none absolute top-9 right-3" />
             </div>
             <div className="flex flex-col gap-1">
               <label htmlFor="" className="text-sm">
                 Email
               </label>
               <input
-                className={`lg:p-2 p-1 border outline-0 ${errors.email ? "border-error" : "border-gray-200"}   rounded-full `}
+                className={`  py-2 px-4 text-sm border outline-0 ${errors.email ? "border-error" : "border-gray-200"}   rounded-full `}
                 type="text"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -205,7 +212,7 @@ const SignUp = ({ setIsLogin }) => {
                 Mobile number
               </label>
               <input
-                className={`lg:p-2 p-1 border outline-0 ${errors.phone ? "border-error" : "border-gray-200"}  rounded-full `}
+                className={`  py-2 px-4 text-sm border outline-0 ${errors.phone ? "border-error" : "border-gray-200"}  rounded-full `}
                 type="number"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
@@ -218,7 +225,7 @@ const SignUp = ({ setIsLogin }) => {
                   Password
                 </label>
                 <input
-                  className={`lg:p-2 p-1 border outline-0 ${errors.password ? "border-error" : "border-gray-200"}   rounded-full `}
+                  className={`  py-2 px-4 text-sm border outline-0 ${errors.password ? "border-error" : "border-gray-200"}   rounded-full `}
                   type="text"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -230,7 +237,7 @@ const SignUp = ({ setIsLogin }) => {
                   Confirm Password
                 </label>
                 <input
-                  className={`lg:p-2 p-1 border outline-0 ${errors.confirmPassword ? "border-error" : "border-gray-200"}   rounded-full `}
+                  className={`  py-2 px-4 text-sm border outline-0 ${errors.confirmPassword ? "border-error" : "border-gray-200"}   rounded-full `}
                   type="text"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
@@ -241,7 +248,7 @@ const SignUp = ({ setIsLogin }) => {
             <p className="text-sm text-red-600">{errors.passwordNotMatch}</p>
             <div className="flex flex-col gap-1">
               <input
-                className="bg-[#3B82F6] text-white uppercase cursor-pointer lg:p-2 p-1 border outline-0 border-gray-200  rounded-full "
+                className="bg-[#3B82F6] text-white uppercase cursor-pointer   py-2 px-4 border outline-0 border-gray-200  rounded-full "
                 type="submit"
               />
             </div>
@@ -250,7 +257,7 @@ const SignUp = ({ setIsLogin }) => {
           <div className="flex flex-col gap-1 ">
             <button
               onClick={() => setIsLogin(true)}
-              className="cursor-pointer lg:p-2 p-1 border outline-0 border-gray-200 rounded-full"
+              className="cursor-pointer    py-2 px-4  border outline-0 border-gray-200 rounded-full"
             >
               Sign in
             </button>
