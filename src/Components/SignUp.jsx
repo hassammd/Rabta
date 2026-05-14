@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { signUpUser } from "../Redux/SignUpSlice";
 import { last } from "firebase/firestore/pipelines";
 import { useNavigate } from "react-router";
+import logo from "../assets/Rabta-logo.png";
 
 const SignUp = ({ setIsLogin }) => {
   const [firstName, setFirstName] = useState("");
@@ -73,188 +74,186 @@ const SignUp = ({ setIsLogin }) => {
 
   return (
     <>
-      <div className="absolute w-[60%] top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2">
-        <div className="   flex items-center justify-between w-full lg:py-12 p-5 mx-auto">
-          <div className="lg:w-1/3 ">
-            <h1 className="text-8xl font-bold text-center">Rabta</h1>
-          </div>
-          {/* Sign up  */}
-          <div className=" w-[55%]  lg:p-18 p-8 flex flex-col gap-3.5">
-            <form
-              onSubmit={SubmitHandler}
-              action=""
-              className="w-full flex flex-col gap-2"
-            >
-              <div className="flex justify-between gap-3">
-                <div className="flex flex-col gap-1  ">
-                  <label htmlFor="" className="text-sm">
-                    First Name
-                  </label>
-                  <input
-                    className={` lg:p-2 p-1 border outline-0 ${errors.firstName ? "border-error" : "border-gray-200"}   rounded-full `}
-                    type="text"
-                    value={firstName}
-                    placeholder=""
-                    onChange={(e) => setFirstName(e.target.value)}
-                  />
-                  <p className="text-sm text-red-600">{errors.firstName}</p>
-                </div>
-                <div className="flex flex-col gap-1  ">
-                  <label htmlFor="" className="text-sm">
-                    Last Name
-                  </label>
-                  <input
-                    className={`lg:p-2 p-1 border outline-0 ${errors?.lastName ? "border-error" : "border-gray-200"}   rounded-full `}
-                    type="text"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                  />
-                  <p className="text-sm text-red-600">{errors.lastName}</p>
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-1 w-full">
+      <div className="flex flex-col md:flex-row items-center lg:justify-between w-full lg:py-12 p-5 mx-auto">
+        {/* left side */}
+        <div className="flex items-center justify-center lg:w-1/3 md:w-1/3 ">
+          <img className="w-[100px]" src={logo} alt="" />
+        </div>
+        {/* right side */}
+        {/* Sign up  */}
+        <div className=" lg:w-[55%] md:w-[50%] w-full lg:p-18 p-4 flex flex-col gap-3.5">
+          <form
+            onSubmit={SubmitHandler}
+            action=""
+            className="w-full flex flex-col gap-2"
+          >
+            <div className="flex  gap-3">
+              <div className="flex flex-col gap-1 w-[48%] ">
                 <label htmlFor="" className="text-sm">
-                  Date of birth
-                </label>
-                <div className="flex gap-3">
-                  <div className="w-1/3">
-                    <select
-                      className={`w-full lg:text-[16px] text-sm lg:p-2 p-1 border outline-0 ${errors.day ? "border-error" : "border-gray-200"}  rounded-full `}
-                      name=""
-                      id=""
-                      value={day}
-                      onChange={(e) => setDay(e.target.value)}
-                    >
-                      <option value="">Day</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">4</option>
-                    </select>
-                    <p className="text-sm text-red-600">{errors.day}</p>
-                  </div>
-                  <div className="w-1/3">
-                    <select
-                      className={`w-full lg:text-[16px] text-sm lg:p-2 p-1 border outline-0 ${errors.month ? "border-error" : "border-gray-200"}   rounded-full `}
-                      name=""
-                      id=""
-                      onChange={(e) => setMonth(e.target.value)}
-                    >
-                      <option hidden value="">
-                        Month
-                      </option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                    </select>
-                    <p className="text-sm text-red-600">{errors.month}</p>
-                  </div>
-                  <div className="w-1/3">
-                    <select
-                      className={`w-full lg:text-[16px] text-sm lg:p-2 p-1 border outline-0 ${errors.year ? "border-error" : "border-gray-200"}   rounded-full `}
-                      name=""
-                      id=""
-                      onChange={(e) => setYear(e.target.value)}
-                    >
-                      <option hidden value="">
-                        Year
-                      </option>
-                      <option value="2020">2020</option>
-                      <option value="2021">2021</option>
-                      <option value="2022">2022</option>
-                    </select>
-                    <p className="text-sm text-red-600">{errors.year}</p>
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-col gap-1">
-                <label htmlFor="" className="text-sm">
-                  Gender
-                </label>
-                <select
-                  className={`lg:p-2 lg:text-[16px] text-sm p-1 border outline-0 ${errors.gender ? "border-error" : "border-gray-200"}   rounded-full `}
-                  name=""
-                  id=""
-                  onChange={(e) => setGender(e.target.value)}
-                >
-                  <option hidden value="Male">
-                    Gender
-                  </option>
-                  <option value="Female">Male</option>
-                  <option value="Female">Female</option>
-                  <option value="custom">Cusotm</option>
-                </select>
-                <p className="text-sm text-red-600">{errors.gender}</p>
-              </div>
-              <div className="flex flex-col gap-1">
-                <label htmlFor="" className="text-sm">
-                  Email
+                  First Name
                 </label>
                 <input
-                  className={`lg:p-2 p-1 border outline-0 ${errors.email ? "border-error" : "border-gray-200"}   rounded-full `}
+                  className={` lg:p-2 p-1 border outline-0 ${errors.firstName ? "border-error" : "border-gray-200"}   rounded-full `}
                   type="text"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={firstName}
+                  placeholder=""
+                  onChange={(e) => setFirstName(e.target.value)}
                 />
-                <p className="text-sm text-red-600">{errors.email}</p>
+                <p className="text-sm text-red-600">{errors.firstName}</p>
               </div>
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col gap-1 w-[48%] ">
                 <label htmlFor="" className="text-sm">
-                  Mobile number
+                  Last Name
                 </label>
                 <input
-                  className={`lg:p-2 p-1 border outline-0 ${errors.phone ? "border-error" : "border-gray-200"}  rounded-full `}
-                  type="number"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  className={`lg:p-2 p-1 border outline-0 ${errors?.lastName ? "border-error" : "border-gray-200"}   rounded-full `}
+                  type="text"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
                 />
-                <p className="text-sm text-red-600">{errors.phone}</p>
+                <p className="text-sm text-red-600">{errors.lastName}</p>
               </div>
-              <div className="flex gap-5">
-                <div className="flex flex-col gap-1 w-1/2">
-                  <label htmlFor="" className="text-sm">
-                    Password
-                  </label>
-                  <input
-                    className={`lg:p-2 p-1 border outline-0 ${errors.password ? "border-error" : "border-gray-200"}   rounded-full `}
-                    type="text"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                  <p className="text-sm text-red-600">{errors.password}</p>
-                </div>
-                <div className="flex flex-col gap-1 w-1/2">
-                  <label htmlFor="" className="text-sm">
-                    Confirm Password
-                  </label>
-                  <input
-                    className={`lg:p-2 p-1 border outline-0 ${errors.confirmPassword ? "border-error" : "border-gray-200"}   rounded-full `}
-                    type="text"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                  />
-                  <p className="text-sm text-red-600">
-                    {errors.confirmPassword}
-                  </p>
-                </div>
-              </div>
-              <p className="text-sm text-red-600">{errors.passwordNotMatch}</p>
-              <div className="flex flex-col gap-1">
-                <input
-                  className="bg-[#3B82F6] text-white uppercase cursor-pointer lg:p-2 p-1 border outline-0 border-gray-200  rounded-full "
-                  type="submit"
-                />
-              </div>
-            </form>
-            Already have an account?
-            <div className="flex flex-col gap-1 ">
-              <button
-                onClick={() => setIsLogin(true)}
-                className="cursor-pointer lg:p-2 p-1 border outline-0 border-gray-200 rounded-full"
-              >
-                Sign in
-              </button>
             </div>
+
+            <div className="flex flex-col gap-1 w-full">
+              <label htmlFor="" className="text-sm">
+                Date of birth
+              </label>
+              <div className="flex gap-3">
+                <div className="w-1/3">
+                  <select
+                    className={`w-full lg:text-[16px] text-sm lg:p-2 p-1 border outline-0 ${errors.day ? "border-error" : "border-gray-200"}  rounded-full `}
+                    name=""
+                    id=""
+                    value={day}
+                    onChange={(e) => setDay(e.target.value)}
+                  >
+                    <option value="">Day</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">4</option>
+                  </select>
+                  <p className="text-sm text-red-600">{errors.day}</p>
+                </div>
+                <div className="w-1/3">
+                  <select
+                    className={`w-full lg:text-[16px] text-sm lg:p-2 p-1 border outline-0 ${errors.month ? "border-error" : "border-gray-200"}   rounded-full `}
+                    name=""
+                    id=""
+                    onChange={(e) => setMonth(e.target.value)}
+                  >
+                    <option hidden value="">
+                      Month
+                    </option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                  </select>
+                  <p className="text-sm text-red-600">{errors.month}</p>
+                </div>
+                <div className="w-1/3">
+                  <select
+                    className={`w-full lg:text-[16px] text-sm lg:p-2 p-1 border outline-0 ${errors.year ? "border-error" : "border-gray-200"}   rounded-full `}
+                    name=""
+                    id=""
+                    onChange={(e) => setYear(e.target.value)}
+                  >
+                    <option hidden value="">
+                      Year
+                    </option>
+                    <option value="2020">2020</option>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                  </select>
+                  <p className="text-sm text-red-600">{errors.year}</p>
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col gap-1">
+              <label htmlFor="" className="text-sm">
+                Gender
+              </label>
+              <select
+                className={`lg:p-2 lg:text-[16px] text-sm p-1 border outline-0 ${errors.gender ? "border-error" : "border-gray-200"}   rounded-full `}
+                name=""
+                id=""
+                onChange={(e) => setGender(e.target.value)}
+              >
+                <option hidden value="Male">
+                  Gender
+                </option>
+                <option value="Female">Male</option>
+                <option value="Female">Female</option>
+                <option value="custom">Cusotm</option>
+              </select>
+              <p className="text-sm text-red-600">{errors.gender}</p>
+            </div>
+            <div className="flex flex-col gap-1">
+              <label htmlFor="" className="text-sm">
+                Email
+              </label>
+              <input
+                className={`lg:p-2 p-1 border outline-0 ${errors.email ? "border-error" : "border-gray-200"}   rounded-full `}
+                type="text"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <p className="text-sm text-red-600">{errors.email}</p>
+            </div>
+            <div className="flex flex-col gap-1">
+              <label htmlFor="" className="text-sm">
+                Mobile number
+              </label>
+              <input
+                className={`lg:p-2 p-1 border outline-0 ${errors.phone ? "border-error" : "border-gray-200"}  rounded-full `}
+                type="number"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
+              <p className="text-sm text-red-600">{errors.phone}</p>
+            </div>
+            <div className="flex gap-3">
+              <div className="flex flex-col gap-1 w-[48%]">
+                <label htmlFor="" className="text-sm">
+                  Password
+                </label>
+                <input
+                  className={`lg:p-2 p-1 border outline-0 ${errors.password ? "border-error" : "border-gray-200"}   rounded-full `}
+                  type="text"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <p className="text-sm text-red-600">{errors.password}</p>
+              </div>
+              <div className="flex flex-col gap-1 w-[48%]">
+                <label htmlFor="" className="text-sm">
+                  Confirm Password
+                </label>
+                <input
+                  className={`lg:p-2 p-1 border outline-0 ${errors.confirmPassword ? "border-error" : "border-gray-200"}   rounded-full `}
+                  type="text"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+                <p className="text-sm text-red-600">{errors.confirmPassword}</p>
+              </div>
+            </div>
+            <p className="text-sm text-red-600">{errors.passwordNotMatch}</p>
+            <div className="flex flex-col gap-1">
+              <input
+                className="bg-[#3B82F6] text-white uppercase cursor-pointer lg:p-2 p-1 border outline-0 border-gray-200  rounded-full "
+                type="submit"
+              />
+            </div>
+          </form>
+          Already have an account?
+          <div className="flex flex-col gap-1 ">
+            <button
+              onClick={() => setIsLogin(true)}
+              className="cursor-pointer lg:p-2 p-1 border outline-0 border-gray-200 rounded-full"
+            >
+              Sign in
+            </button>
           </div>
         </div>
       </div>

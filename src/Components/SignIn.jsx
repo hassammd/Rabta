@@ -40,7 +40,7 @@ const SignIn = ({ setIsLogin }) => {
   };
   return (
     <>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 lg:w-1/3 w-full lg:py-12 p-5 mx-auto">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 lg:w-1/3 lg:py-12 p-5 mx-auto">
         <h1 className="font-bold text-center text-2xl">Sign in to Rabta</h1>
         <div className="    lg:py-22 lg:px-20 p-8 flex flex-col gap-3.5">
           <form
