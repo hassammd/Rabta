@@ -162,6 +162,35 @@ const Navbar = () => {
 
       {/* --- MOBILE BOTTOM TAB BAR (Visible on mobile only) --- */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-6 py-3 flex justify-between items-center z-50">
+        <div className="dropdown dropdown-top lg:dropdown-end md:dropdown-start ">
+          <div
+            tabIndex={0}
+            role="button"
+            className="p-2 hover:bg-gray-200 rounded-full"
+          >
+            <div className="h-6 w-6 bg-gray-200 rounded-full overflow-hidden flex-shrink-0">
+              {currentUser?.profilePic ? (
+                <img
+                  src={currentUser.profilePic}
+                  alt="profile"
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <FaUser className="text-gray-400 m-auto mt-2" />
+              )}
+            </div>
+          </div>
+          <ul
+            tabIndex={0}
+            className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow-xl border-gray-200 mb-2"
+          >
+            <li onClick={logoutUser} className="text-error font-semibold">
+              <a>
+                <MdLogout /> Logout
+              </a>
+            </li>
+          </ul>
+        </div>
         {nav.map((item) => (
           <NavLink
             key={item.name}
@@ -173,8 +202,12 @@ const Navbar = () => {
             {item.icons}
           </NavLink>
         ))}
+
         {/* Extra Action Button for Mobile (Optional) */}
-        <button className="bg-black text-white p-3 rounded-full shadow-lg -mt-10 border-4 border-white">
+        <button
+          onClick={() => navigate("/profile")}
+          className="bg-black text-white p-3 rounded-full shadow-lg -mt-10 border-4 border-white"
+        >
           <FaPlusSquare />
         </button>
       </div>

@@ -45,7 +45,7 @@ const PopUpBox = ({ setIsBoxActive, currentUser }) => {
         onClick={handleOverlayClick}
         className="fixed cursor-pointer bg-black/80  inset-0 flex items-center justify-center z-50"
       >
-        <div className="z-50  bg-white px-20 h-[500px] w-[450px] flex flex-col items-center justify-center">
+        <div className="z-50  bg-white px-20 h-[500px] w-[450px] flex flex-col items-center justify-center rounded-3xl">
           <h1 className="text-4xl font-bold font-black mb-7">Edit Profile</h1>
           <form
             onSubmit={handleUpdate}
@@ -58,7 +58,7 @@ const PopUpBox = ({ setIsBoxActive, currentUser }) => {
               </label>
               <input
                 onChange={(e) => setFirstName(e.target.value)}
-                className="py-1 px-4 outline-0 border-gray-300 rounded-xl"
+                className="py-1 px-4 outline-0 border-gray-200 text-sm rounded-xl"
                 type="text"
                 value={firstName}
               />
@@ -69,7 +69,7 @@ const PopUpBox = ({ setIsBoxActive, currentUser }) => {
               </label>
               <input
                 onChange={(e) => setLastName(e.target.value)}
-                className="py-1 px-4 outline-0 border-gray-300 rounded-xl"
+                className="py-1.5 px-4 outline-0 border-gray-200 text-sm  rounded-xl"
                 type="text"
                 value={lastName}
               />
@@ -80,7 +80,7 @@ const PopUpBox = ({ setIsBoxActive, currentUser }) => {
               </label>
               <textarea
                 onChange={(e) => setBio(e.target.value)}
-                className="py-1 px-4 outline-0 border-gray-300 rounded-xl"
+                className="py-2 px-4 text-sm outline-0 border-gray-200 rounded-xl"
                 type="text"
                 value={bio}
               />
@@ -94,7 +94,9 @@ const PopUpBox = ({ setIsBoxActive, currentUser }) => {
               />
             </div>
           </form>
-          {loading ? "Updating..." : "Save Changes"}
+          <p className="text-sm mt-3">
+            {loading ? "Updating..." : "Save Changes"}
+          </p>
         </div>
       </div>
     </>
