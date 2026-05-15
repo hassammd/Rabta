@@ -168,7 +168,7 @@ const Navbar = () => {
             role="button"
             className="p-2 hover:bg-gray-200 rounded-full"
           >
-            <div className="h-6 w-6 bg-gray-200 rounded-full overflow-hidden flex-shrink-0">
+            <div className="h-8 w-8 bg-gray-200 rounded-full overflow-hidden flex-shrink-0">
               {currentUser?.profilePic ? (
                 <img
                   src={currentUser.profilePic}
