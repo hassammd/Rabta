@@ -126,7 +126,7 @@ const PostCard = ({ currentUserPostsData }) => {
                       : currentUserPostsData.postId,
                   );
                 }}
-                className="lg:p-2 p-0 group-hover:bg-blue-100/50 group-hover:text-blue-500 rounded-full transition-all"
+                className="  p-0 group-hover:bg-blue-100/50 group-hover:text-blue-500 rounded-full transition-all"
               >
                 <FaRegComment className="text-[16px]" />
               </div>
@@ -141,7 +141,7 @@ const PostCard = ({ currentUserPostsData }) => {
                 onClick={() =>
                   handlePostLike(currentUserPostsData.postId, isLiked)
                 }
-                className="lg:p-2 p-0 group-hover:bg-pink-100/50 group-hover:text-pink-500 rounded-full transition-all"
+                className=" p-0 group-hover:bg-pink-100/50 group-hover:text-pink-500 rounded-full transition-all"
               >
                 {isLiked ? (
                   <AiFillHeart className="text-red-500 text-2xl" /> // Red Dil
@@ -163,7 +163,7 @@ const PostCard = ({ currentUserPostsData }) => {
               }
               action=""
             >
-              <div className="relative">
+              <div className="mt-5 relative">
                 <input
                   onChange={(e) => setCommentText(e.target.value)}
                   className=" border-gray-200 lg:px-7 lg:py-2 px-5 py-2 text-sm outline-0 rounded-full w-full"

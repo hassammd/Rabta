@@ -117,7 +117,7 @@ const Navbar = () => {
                 {currentUser?.firstName || "User"}
               </h3>
               <span className="text-xs text-gray-500">
-                @{currentUser?.userName || "username"}
+                {currentUser?.userName || "username"}
               </span>
             </div>
           </div>

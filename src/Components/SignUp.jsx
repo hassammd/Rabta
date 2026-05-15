@@ -193,6 +193,7 @@ const SignUp = ({ setIsLogin }) => {
               <label htmlFor="" className="text-sm">
                 Gender
               </label>
+
               <select
                 className={`appearance-none   lg:text-[16px] text-sm py-2 px-4 text-sm border outline-0 ${errors.gender ? "border-error" : "border-gray-200"}   rounded-full `}
                 name=""

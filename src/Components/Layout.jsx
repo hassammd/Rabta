@@ -119,7 +119,7 @@ const Layout = () => {
                         {user.firstName} {user.lastName}
                       </span>
                       <span className="text-xs text-gray-500">
-                        @{user.userName}
+                        {user.userName}
                       </span>
                     </div>
                   </div>

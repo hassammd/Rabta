@@ -39,6 +39,7 @@ const Home = () => {
   const [isMobileNav, setIsMobileNav] = useState(false);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   //toggle comments
 
@@ -113,8 +114,22 @@ const Home = () => {
               postId: doc.id,
               ...doc.data(),
             }));
-
-            setAllUserPosts(posts);
+            //Algoritgn Start
+            const sortedPosts = posts.sort((a, b) => {
+              console.log("this is a post", a);
+              //calculate the score of likes and comments
+              const scoreA =
+                (a.likes?.length || 0) * 2 + (a.comments?.length || 0) * 3;
+              const scoreB =
+                (b.likes?.length || 0) * 2 + (b.comments?.length || 0) * 3;
+              //step 1 Popularity check
+              if (scoreB !== scoreA) {
+                return scoreB - scoreA;
+              }
+              //step 2 if score is equal then sort according to the timespam
+              return b.createdAt - a.createdAt;
+            });
+            setAllUserPosts(sortedPosts);
 
             // IDs dispatch logic
             const postIds = posts.map((post) => post.postId);
@@ -152,7 +167,6 @@ const Home = () => {
       {/* <CreatePost currentUser={currentUser} /> */}
       {/* <h1>All user Posts</h1>  */}
       <div className="hidden lg:block flex justify-between items-center bg-gray-100 border-b-1 border-gray-300 px-3.5 py-4">
-        <h1>Rabta</h1>
         <span className="text-black font-semibold">For You</span>
       </div>
 
@@ -162,6 +176,7 @@ const Home = () => {
         return (
           <>
             <div
+              // onClick={() => navigate(`/profile/${items.uid}`)}
               key={items.postId}
               className="flex gap-3 px-3 py-6 border-b border-gray-200 hover:bg-gray-100/50 transition-colors cursor-pointer w-full"
             >
@@ -181,7 +196,10 @@ const Home = () => {
                 {/* Header: Name, Username, Time & More */}
                 <div className="flex items-center justify-between w-full">
                   <div className="flex items-center gap-1 flex-wrap">
-                    <span className="font-bold lg:text-[15px] text-sm hover:underline flex items-center gap-0.5">
+                    <span
+                      onClick={() => navigate(`/profile/${items.uid}`)}
+                      className="font-bold lg:text-[15px] text-sm hover:underline flex items-center gap-0.5"
+                    >
                       {items.firstName} {items.lastName}
                       <MdVerified className="text-blue-500 text-[16px]" />
                     </span>
@@ -202,34 +220,38 @@ const Home = () => {
                   </div>
                   {/* post image */}
                   <div>
-                    <img className="rounded-xl" src={items.postImage} alt="" />
+                    <img
+                      className="rounded-xl"
+                      src={items.postImage}
+                      alt="img"
+                    />
                   </div>
                 </div>
 
                 {/* Icons Row */}
                 <div className="flex items-center gap-2  mt-3 text-gray-500 max-w-md">
                   {/* Comment */}
-                  <div className="flex items-center lg:gap-2 gap-0 group">
+                  <div className="flex items-center lg:gap-1 gap-0 group">
                     <div
                       onClick={() => {
                         setExpandedPostId(
                           expandedPostId == items.postId ? null : items.postId,
                         );
                       }}
-                      className="lg:p-2 p-1 group-hover:bg-blue-100/50 group-hover:text-blue-500 rounded-full transition-all"
+                      className="    group-hover:bg-blue-100/50 group-hover:text-blue-500 rounded-full transition-all"
                     >
                       <FaRegComment className="lg:text-[16px]" />
                     </div>
                     <span className="text-[13px] group-hover:text-blue-500">
-                      1.2K
+                      {items.comments.length}
                     </span>
                   </div>
 
                   {/* Like */}
-                  <div className="flex items-center lg:gap-2 gap-0.5 group">
+                  <div className="flex items-center lg:gap-1 gap-0.5 group">
                     <div
                       onClick={() => handlePostLike(items.postId, isLiked)}
-                      className="lg:p-2 p-1 group-hover:bg-pink-100/50 group-hover:text-pink-500 rounded-full transition-all"
+                      className=" group-hover:bg-pink-100/50 group-hover:text-pink-500 rounded-full transition-all"
                     >
                       {isLiked ? (
                         <AiFillHeart className="text-red-500 text-2xl" /> // Red heart
