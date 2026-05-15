@@ -173,6 +173,7 @@ const Profile = () => {
   useEffect(() => {
     const CurrentUsersPostHandler = async () => {
       if (!currentUser) return;
+      setLoading(true);
       const userId = auth.currentUser.uid;
       const targetId = param?.uid || currentUser?.uid;
       try {
@@ -185,6 +186,7 @@ const Profile = () => {
             ...doc.data(),
           }));
           setCurrentUserPosts(userPosts);
+          setLoading(false);
         });
       } catch (err) {
         console.log(err);
@@ -198,7 +200,6 @@ const Profile = () => {
       {!loading ? (
         <div className="flex flex-col h-screen rounded-sm">
           {/* banner */}
-
           <div>
             <div className=" relative flex items-center justify-center bg-gray-300 lg:h-[250px] h-[140px]">
               {/* banner image */}

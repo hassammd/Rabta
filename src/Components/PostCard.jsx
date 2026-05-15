@@ -6,7 +6,13 @@ import { IoStatsChartOutline } from "react-icons/io5";
 import { MdVerified } from "react-icons/md";
 import { auth, db } from "../../Firebase";
 import { useEffect, useState } from "react";
-import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
+import {
+  arrayRemove,
+  arrayUnion,
+  deleteDoc,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 import { useSelector } from "react-redux";
 
 const PostCard = ({ currentUserPostsData }) => {
@@ -63,7 +69,16 @@ const PostCard = ({ currentUserPostsData }) => {
       console.log(err);
     }
   };
+  //delete current user post
 
+  const deletePost = async (postId) => {
+    const docRef = doc(db, "posts", postId);
+    try {
+      await deleteDoc(docRef);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <>
       <div
@@ -95,7 +110,24 @@ const PostCard = ({ currentUserPostsData }) => {
               </span>
               <span className="text-gray-500 text-[15px]"> </span>
             </div>
-            <HiOutlineDotsHorizontal className="text-gray-500 hover:text-blue-500 transition-colors" />
+            {currentUser && (
+              <div className="dropdown dropdown-end">
+                <div tabIndex={0} role="button" className="">
+                  <HiOutlineDotsHorizontal className="text-gray-500 hover:text-blue-500 transition-colors" />
+                </div>
+                <ul
+                  tabIndex="-1"
+                  className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
+                >
+                  <li>
+                    <a>Edit</a>
+                  </li>
+                  <li onClick={() => deletePost(currentUserPostsData.postId)}>
+                    <a>Delete</a>
+                  </li>
+                </ul>
+              </div>
+            )}
           </div>
 
           <div className="flex flex-col gap-4">
