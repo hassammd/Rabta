@@ -40,7 +40,7 @@ const SignIn = ({ setIsLogin }) => {
   };
   return (
     <>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 lg:w-1/2 w-full lg:py-12  mx-auto">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 lg:w-1/3  md:w-1/2 w-full lg:py-12  mx-auto">
         <h1 className="font-bold text-center text-2xl">Sign in to Rabta</h1>
         <div className="    lg:py-22 lg:px-20 p-8 flex flex-col gap-3.5">
           <form
@@ -51,19 +51,19 @@ const SignIn = ({ setIsLogin }) => {
             <div className="flex flex-col gap-1">
               <label className="text-sm lg:px-4 ">Email</label>
               <input
-                className={`lg:px-4 lg:py-2 p-1 border outline-0 ${errrs.email ? "border-error" : "border-gray-200"}   rounded-full`}
+                className={`lg:px-4 lg:py-2 px-4 py-2 border outline-0 ${errrs.email ? "border-error" : "border-gray-200"}   rounded-full`}
                 type="text"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              <p className="text-sm text-red-600">{errrs.email}</p>
+              <p className="text-sm text-red-600 lg:px-4">{errrs.email}</p>
             </div>
 
             <div className="flex flex-col gap-1">
               <label className="text-sm lg:px-4 ">Password</label>
               <div className="relative">
                 <input
-                  className={`lg:px-4 lg:py-2 p-1 w-full border outline-0 ${errrs.password ? "border-error" : "border-gray-200"}    rounded-full`}
+                  className={`lg:px-4 lg:py-2 py-2 px-4 p-1 w-full border outline-0 ${errrs.password ? "border-error" : "border-gray-200"}    rounded-full`}
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -75,7 +75,7 @@ const SignIn = ({ setIsLogin }) => {
                   {showPassword ? <LuEyeClosed /> : <LuEye />}
                 </span>
               </div>
-              <p className="text-sm text-red-600">{errrs.password}</p>
+              <p className="text-sm text-red-600 lg:px-4">{errrs.password}</p>
             </div>
 
             <p className="text-sm text-red-600"></p>
