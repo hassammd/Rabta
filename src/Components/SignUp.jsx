@@ -89,7 +89,7 @@ const SignUp = ({ setIsLogin }) => {
 
   return (
     <>
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-9 lg:flex-row items-center justify-center w-full xl:w-[70%] lg:py-12 p-5 mx-auto">
+      <div className="px-4 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-9 lg:flex-row items-center justify-center w-full xl:w-[70%] lg:py-12 p-5 mx-auto">
         {/* left side */}
         <div className="flex items-center justify-center lg:w-[30%]  md:w-1/3 ">
           <img className="lg:w-[50%] w-[100px]" src={logo} alt="" />
