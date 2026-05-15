@@ -177,9 +177,10 @@ const CreatePost = ({ currentUser }) => {
                 </label>
               </div>
               <input
-                className={`${postText || imageFile ? "bg-blue-500 text-white" : "bg-gray-200 disabled"} border cursor-pointer border-gray-100 rounded-4xl lg:px-5 lg:py-2 px-3.5 py-1.5 text-sm`}
+                className={`${postText || imageFile ? "bg-blue-500 text-white" : "bg-gray-200 disabled"}   border cursor-pointer border-gray-100 rounded-4xl lg:px-5 lg:py-2 px-3.5 py-1.5 text-sm`}
                 type="submit"
                 value={"Post"}
+                disabled={loading || (!postText && !imageFile)}
               />
             </div>
             {/* image preview here */}

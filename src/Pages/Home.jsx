@@ -239,7 +239,7 @@ const Home = () => {
                       }}
                       className="    group-hover:bg-blue-100/50 group-hover:text-blue-500 rounded-full transition-all"
                     >
-                      <FaRegComment className="lg:text-[16px]" />
+                      <FaRegComment className="lg:text-[20px]" />
                     </div>
                     <span className="text-[13px] group-hover:text-blue-500">
                       {items.comments.length}
