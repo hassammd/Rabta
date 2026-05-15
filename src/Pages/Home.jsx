@@ -116,7 +116,6 @@ const Home = () => {
             }));
             //Algoritgn Start
             const sortedPosts = posts.sort((a, b) => {
-              console.log("this is a post", a);
               //calculate the score of likes and comments
               const scoreA =
                 (a.likes?.length || 0) * 2 + (a.comments?.length || 0) * 3;

@@ -36,7 +36,7 @@ const SignUp = ({ setIsLogin }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const SubmitHandler = (e) => {
+  const SubmitHandler = async (e) => {
     e.preventDefault();
     let newError = {};
     if (!firstName.trim()) {
@@ -81,9 +81,15 @@ const SignUp = ({ setIsLogin }) => {
     if (Object.keys(newError).length > 0) {
       setErrors(newError);
     } else {
-      dispatch(signUpUser({ email, password, firstName, lastName }));
-      setErrors({});
-      navigate("/");
+      try {
+        setErrors({});
+        await dispatch(
+          signUpUser({ email, password, firstName, lastName }),
+        ).unwrap();
+        navigate("/");
+      } catch (err) {
+        setErrors({ email: err });
+      }
     }
   };
 
