@@ -70,10 +70,10 @@ const Navbar = () => {
   return (
     <>
       {/* --- DESKTOP SIDEBAR (Visible on md and up) --- */}
-      <div className="hidden md:flex flex-col justify-between h-screen sticky top-0 p-5 border-r border-gray-100  min-w-[250px] md:min-w-[100px] ">
+      <div className="hidden md:flex flex-col justify-between h-screen sticky top-0 px-5 py-16 border-r border-gray-100  min-w-[250px] md:min-w-[100px] ">
         <div className="flex flex-col gap-10">
-          <div>
-            <Link to="/" className=" font-black text-black">
+          <div className="pl-4">
+            <Link to="/" className=" font-black text-black ">
               <img src={logo} alt="" className="w-[100px]" />
             </Link>
           </div>
@@ -84,8 +84,8 @@ const Navbar = () => {
                   <NavLink
                     to={item.url}
                     className={({ isActive }) =>
-                      `flex items-center gap-4 px-4 py-3 rounded-full text-xl transition-all ${
-                        isActive ? "font-bold bg-gray-100" : "hover:bg-gray-50"
+                      `flex items-center gap-4 px-0  px-4  py-3 rounded-full text-xl transition-all ${
+                        isActive ? "font-bold bg-gray-100" : "hover:bg-white"
                       }`
                     }
                   >
@@ -99,7 +99,7 @@ const Navbar = () => {
         </div>
 
         {/* User Profile Section (Desktop) */}
-        <div className="flex items-center justify-between w-full p-2 hover:bg-gray-100 rounded-full transition-all cursor-pointer border border-transparent hover:border-gray-200">
+        <div className="flex items-center justify-between w-full p-2 bg-white rounded-full transition-all cursor-pointer border border-transparent hover:border-gray-200">
           <div className="flex items-center gap-3">
             <div className="h-10 w-10 bg-gray-200 rounded-full overflow-hidden flex-shrink-0">
               {currentUser?.profilePic ? (

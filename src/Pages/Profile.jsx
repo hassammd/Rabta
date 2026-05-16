@@ -17,7 +17,11 @@ import { LuCalendarDays, LuHardDriveUpload } from "react-icons/lu";
 import PopUpBox from "../Components/PopUpBox";
 import CreatePost from "../Components/CreatePost";
 import { IoCameraOutline } from "react-icons/io5";
-import { MdEdit, MdOutlineDeleteOutline } from "react-icons/md";
+import {
+  MdEdit,
+  MdOutlineDeleteOutline,
+  MdOutlineFileUpload,
+} from "react-icons/md";
 import { RiDeleteBinLine } from "react-icons/ri";
 import button from "daisyui/components/button";
 import { setUser, updateBannerImage } from "../Redux/userSlice";
@@ -34,8 +38,11 @@ const Profile = () => {
   const [profileImageLoading, setProfileImageLoading] = useState(false);
   const [bannerImageLoading, setBannerImageLoading] = useState(false);
   const [previewLink, setPreviewLink] = useState("");
+  const [profileImagePreviewLink, setProfileImagePreviewLink] = useState("");
   const [bannerImageUrl, setBannerImageUrl] = useState(null);
   const [currentUserPosts, setCurrentUserPosts] = useState([]);
+
+  console.log("this is profile image link::::", profileImagePreviewLink);
 
   const alluserPostID = useSelector(
     (state) => state.allUsers.allUsersPostisIds,
@@ -197,102 +204,105 @@ const Profile = () => {
 
   return (
     <>
+      <editPostBox />
       {!loading ? (
         <div className="flex flex-col h-screen rounded-sm">
           {/* banner */}
-          <div>
-            <div className=" relative flex items-center justify-center bg-gray-300 lg:h-[250px] h-[140px]">
-              {/* banner image */}
-              <input
-                onChange={(e) => {
-                  const file = e.target.files[0];
-                  if (file) {
-                    setBannerImageUrl(file);
-                    setPreviewLink(URL.createObjectURL(file));
-                  }
-                }}
-                hidden
-                type="file"
-                id="banner_image"
-              />
+          <div className=" relative flex items-center justify-center bg-gray-300 lg:h-[250px] h-[140px]">
+            {/* banner image */}
+            <input
+              onChange={(e) => {
+                const file = e.target.files[0];
+                if (file) {
+                  setBannerImageUrl(file);
+                  setPreviewLink(URL.createObjectURL(file));
+                }
+              }}
+              hidden
+              type="file"
+              id="banner_image"
+            />
 
-              {/* banner edit button */}
-              {!param.uid && (
-                <span
-                  onClick={() =>
-                    document.getElementById("banner-model").showModal()
-                  }
-                  className="absolute top-4 right-4 p-2 bg-gray-300 rounded-full cursor-pointer hover:bg-gray-200 transition-all duration-300"
-                >
-                  <MdEdit className="text-xl " />
-                </span>
-              )}
+            {/* banner edit button */}
+            {!param.uid && (
+              <span
+                onClick={() =>
+                  document.getElementById("banner-model").showModal()
+                }
+                className="absolute top-4 right-4 p-2 bg-gray-300 rounded-full cursor-pointer hover:bg-gray-200 transition-all duration-300"
+              >
+                <MdEdit className="text-xl " />
+              </span>
+            )}
 
-              {/* Open modal for banner image */}
+            {/* Open modal for banner image */}
 
-              <dialog id="banner-model" className="modal">
-                <div className="modal-box">
-                  {!previewLink ? (
-                    <label htmlFor="banner_image">
-                      <div className="cursor-pointer mx-auto rounded-sm w-[100px] h-[50px] border border-gray-300   flex items-center justify-center">
-                        <LuHardDriveUpload className="text-2xl text-gray-500" />
-                      </div>
-                    </label>
-                  ) : (
-                    <div className="flex flex-col items-center gap-5">
-                      <img src={previewLink} alt="" />
-                      <button
-                        className="bg-blue-400 rounded-2xl px-2 text-sm text-white cursor-pointer"
-                        onClick={bannerImageUpload}
-                      >
-                        Save Changes
-                      </button>
+            <dialog id="banner-model" className="modal">
+              <div className="modal-box">
+                {!previewLink ? (
+                  <label htmlFor="banner_image">
+                    <div className="cursor-pointer mx-auto rounded-sm w-[100px] h-[50px] border border-gray-300   flex items-center justify-center">
+                      <LuHardDriveUpload className="text-2xl text-gray-500" />
                     </div>
-                  )}
-                </div>
-                <form method="dialog" className="modal-backdrop">
-                  <button>close</button>
-                </form>
-              </dialog>
-              {!bannerImageLoading ? (
-                <img
-                  className="w-full h-full object-cover"
-                  src={currentUser.bannerPic}
-                  alt=""
-                />
-              ) : (
-                <span className="loading loading-bars loading-xs"></span>
-              )}
-              {/* profile image */}
-              <input
-                onChange={(e) => {
-                  setProfileImageUrl(e.target.files[0]);
-                }}
-                hidden
-                id="profile_image"
-                type="file"
+                  </label>
+                ) : (
+                  <div className="flex flex-col items-center gap-5">
+                    <img src={previewLink} alt="" />
+                    <button
+                      className="bg-blue-400 rounded-2xl px-2 text-sm text-white cursor-pointer"
+                      onClick={bannerImageUpload}
+                    >
+                      Save Changes
+                    </button>
+                  </div>
+                )}
+              </div>
+              <form method="dialog" className="modal-backdrop">
+                <button>close</button>
+              </form>
+            </dialog>
+            {!bannerImageLoading ? (
+              <img
+                className="w-full h-full object-cover"
+                src={currentUser.bannerPic}
+                alt=""
               />
-              <label className=" cursor-pointer flex items-end  gap-4 absolute lg:-bottom-9 lg:left-9 left-3 -bottom-8">
-                <div
-                  onClick={() =>
-                    document.getElementById("my_modal_2").showModal()
-                  }
-                  className="overflow-hidden border border-gray-300  lg:h-30 lg:w-30 h-20 w-20 bg-gray-100 flex items-center justify-center rounded-full"
-                >
-                  {currentUser.profilePic ? (
-                    <img
-                      className="h-full w-full object-cover"
-                      src={currentUser.profilePic}
-                      alt="Profile"
-                    />
-                  ) : (
-                    <FaUser className="text-gray-300 text-5xl" />
-                  )}
-                </div>
-              </label>
-            </div>
-          </div>
+            ) : (
+              <span className="loading loading-bars loading-xs"></span>
+            )}
+            {/* profile image */}
+            <input
+              onChange={(e) => {
+                const profileImage = e.target.files[0];
+                if (profileImage) {
+                  setProfileImageUrl(profileImage);
+                  setProfileImagePreviewLink(URL.createObjectURL(profileImage));
+                }
+              }}
+              hidden
+              id="profile_image"
+              type="file"
+            />
 
+            <label className=" cursor-pointer flex items-end  gap-4 absolute lg:-bottom-9 lg:left-9 left-3 -bottom-8">
+              <div
+                onClick={() =>
+                  document.getElementById("my_modal_2").showModal()
+                }
+                className="overflow-hidden border border-gray-300  lg:h-30 lg:w-30 h-20 w-20 bg-gray-100 flex items-center justify-center rounded-full"
+              >
+                {currentUser.profilePic ? (
+                  <img
+                    className="h-full w-full object-cover"
+                    src={currentUser.profilePic}
+                    alt="Profile"
+                  />
+                ) : (
+                  <FaUser className="text-gray-300 text-5xl" />
+                )}
+              </div>
+            </label>
+          </div>
           {editProfileImageBox ? (
             ""
           ) : (
@@ -313,11 +323,17 @@ const Profile = () => {
                           className="overflow-hidden border border-gray-300  lg:h-30 lg:w-30 h-20 w-20 bg-gray-100 flex items-center justify-center rounded-full"
                         >
                           {!profileImageLoading ? (
-                            <img
-                              className="h-full w-full object-cover"
-                              src={currentUser.profilePic}
-                              alt="Profile"
-                            />
+                            <>
+                              <img
+                                className="h-full w-full object-cover"
+                                src={
+                                  profileImagePreviewLink
+                                    ? profileImagePreviewLink
+                                    : currentUser.profilePic
+                                }
+                                alt="Profile"
+                              />
+                            </>
                           ) : (
                             <span className="loading loading-bars loading-xs"></span>
                           )}
@@ -328,24 +344,36 @@ const Profile = () => {
                     <div className="flex justify-between items-center w-full">
                       <div>
                         {profielImageUrl ? (
-                          <button
-                            onClick={prfileImageUpload}
-                            className="btn bg-gray-100 rounded-full px-4"
-                          >
-                            Save Changes
-                          </button>
+                          <>
+                            <div
+                              className="flex items-center justify-center flex-col cursor-pointer "
+                              onClick={prfileImageUpload}
+                            >
+                              <span className="text-2xl text-gray-500">
+                                <IoCameraOutline className="text-2xl text-gray-500" />
+                              </span>
+                              <h1>Update</h1>
+                            </div>
+                          </>
                         ) : (
                           <label
                             htmlFor="profile_image"
                             className="cursor-pointer flex flex-col items-center"
                           >
-                            <IoCameraOutline className="text-2xl text-gray-500" />
-                            <h1>Update</h1>
+                            {/* <IoCameraOutline className="text-2xl text-gray-500" /> */}
+                            <MdOutlineFileUpload className="text-2xl text-gray-500" />
+                            <h1>Upload</h1>
                           </label>
                         )}
                       </div>
                       <div className="flex flex-col items-center"></div>
-                      <div className="flex flex-col items-center">
+                      <div
+                        onClick={() => {
+                          setProfileImageUrl("");
+                          setProfileImagePreviewLink("");
+                        }}
+                        className="flex flex-col items-center"
+                      >
                         <RiDeleteBinLine className="cursor-pointer text-2xl text-gray-500" />
                         <h1>Delete</h1>
                       </div>
@@ -359,8 +387,8 @@ const Profile = () => {
             </>
           )}
           {/* banner end */}
-
-          <div className=" flex flex-col gap-4 px-4 mt-15">
+          {/* profile iamge section */}
+          <div className=" flex flex-col gap-4 px-4 pb-8 rounded-b-3xl rounded-t-0 pt-15 bg-white">
             <div className="flex justify-between">
               <div>
                 <div>
@@ -428,11 +456,14 @@ const Profile = () => {
               </div>
             </div>
           </div>
-
-          <CreatePost currentUser={currentUser} />
-          {currentUserPosts?.map((post) => {
-            return <PostCard param={param} currentUserPostsData={post} />;
-          })}
+          <div>
+            <CreatePost currentUser={currentUser} />
+          </div>
+          <div className="flex flex-col gap-7 mt-10">
+            {currentUserPosts?.map((post) => {
+              return <PostCard param={param} currentUserPostsData={post} />;
+            })}
+          </div>
         </div>
       ) : (
         <div className="flex flex-col h-screen rounded-sm animate-pulse">

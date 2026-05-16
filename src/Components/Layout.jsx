@@ -42,17 +42,17 @@ const Layout = () => {
   }, [dispatch]);
 
   return (
-    <div className="max-w-[1300px] mx-auto bg-white">
-      <div className="flex gap-0 flex-row min-h-screen">
+    <div className="max-w-[1300px] mx-auto">
+      <div className="flex gap-5 flex-row  min-h-screen">
         {/* --- LEFT SIDEBAR (Desktop: Fixed, Mobile: Bottom via Navbar component) --- */}
-        <aside className="hidden md:block sticky top-0 h-screen py-5   md:w-fit lg:w-[275px]   border-gray-100">
+        <aside className="hidden md:block sticky top-0 h-screen    md:w-fit lg:w-[275px]">
           <Navbar />
         </aside>
 
         {/* --- MAIN CENTER COLUMN (Mobile: Full Width, Desktop: Middle) --- */}
-        <main className="flex-1 border-r border-gray-100 overflow-y-auto no-scrollbar pb-20 md:pb-0">
+        <main className="flex-1  overflow-y-auto no-scrollbar pb-20 md:pb-0">
           {/* Mobile-only Header (Optional: If not in Navbar) */}
-          <div className="md:hidden sticky top-0 bg-white/80 backdrop-blur-md p-4 border-b border-gray-100 z-10">
+          <div className="md:hidden sticky top-0 bg-white/80 backdrop-blur-md p-4  z-10">
             <h1 className="font-black text-2xl text-black">Rabta</h1>
           </div>
 
@@ -68,7 +68,7 @@ const Layout = () => {
         <aside className="hidden xl:flex sticky top-0 h-screen flex-col gap-6 py-5 px-6 w-[350px]">
           {/* Search Bar */}
           <div className="relative">
-            <label className="flex items-center gap-3 bg-gray-100 px-4 py-3 rounded-full focus-within:bg-white focus-within:ring-1 focus-within:ring-black transition-all">
+            <label className="flex items-center gap-3 bg-gray-200 px-4 py-3 rounded-full focus-within:bg-white focus-within:ring-1 focus-within:ring-black transition-all">
               <svg
                 className="h-5 w-5 opacity-50"
                 xmlns="http://www.w3.org/2000/svg"
@@ -89,7 +89,7 @@ const Layout = () => {
           </div>
 
           {/* Suggested Users Card */}
-          <div className="bg-gray-50 rounded-2xl p-4">
+          <div className="bg-white rounded-2xl p-6">
             <h2 className="font-black text-xl mb-4">Who to follow</h2>
             <div className="flex flex-col gap-4">
               {userFilter.slice(0, 5).map((user) => (

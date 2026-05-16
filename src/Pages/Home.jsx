@@ -162,211 +162,215 @@ const Home = () => {
     <>
       {/* <CreatePost currentUser={currentUser} /> */}
       {/* <h1>All user Posts</h1>  */}
-      <div className="hidden lg:block flex justify-between items-center bg-gray-100 border-b-1 border-gray-300 px-3.5 py-4">
+      <div className="hidden lg:block flex justify-between items-center border-gray-300 px-3.5 py-4">
         <span className="text-black font-semibold">For You</span>
       </div>
 
-      {!isFetching ? (
-        <>
-          {allUserPosts?.map((items) => {
-            const isLiked = items.like.includes(currentUser?.uid);
+      <div className="flex flex-col gap-4">
+        {!isFetching ? (
+          <>
+            {allUserPosts?.map((items) => {
+              const isLiked = items.like.includes(currentUser?.uid);
 
-            return (
-              <>
-                <div
-                  // onClick={() => navigate(`/profile/${items.uid}`)}
-                  key={items.postId}
-                  className="flex gap-3 px-3 py-6 border-b border-gray-200 hover:bg-gray-100/50 transition-colors cursor-pointer w-full"
-                >
-                  {/* Left: Profile Image */}
-                  <div className="flex-shrink-0">
-                    <div className="overflow-hidden h-10 w-10 rounded-full flex items-center justify-center bg-gray-300">
-                      {items.profilePic ? (
-                        <img src={items.profilePic} alt="" />
-                      ) : (
-                        <FaUser />
-                      )}
-                    </div>
-                  </div>
+              return (
+                <>
+                  <div
+                    // onClick={() => navigate(`/profile/${items.uid}`)}
+                    key={items.postId}
+                    className="flex gap-3 p-8 bg-white rounded-2xl transition-colors cursor-pointer w-full"
+                  >
+                    {/* Left: Profile Image */}
 
-                  {/* Right: Content Section */}
-                  <div className="flex flex-col w-full">
-                    {/* Header: Name, Username, Time & More */}
-                    <div className="flex items-center justify-between w-full">
-                      <div className="flex items-center gap-1 flex-wrap">
-                        <span
-                          onClick={() => navigate(`/profile/${items.uid}`)}
-                          className="font-bold lg:text-[15px] text-sm hover:underline flex items-center gap-0.5"
-                        >
-                          {items.firstName} {items.lastName}
-                          <MdVerified className="text-blue-500 text-[16px]" />
-                        </span>
-                        <span className="text-gray-500 lg:text-[15px] text-sm">
-                          @{items.firstName?.toLowerCase()}
-                        </span>
-                        <span className="text-gray-500 lg:text-[15px] text-sm"></span>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col gap-4">
-                      {/* Post Text */}
-                      <div className="lg:text-[15px] text-sm text-black mt-2 leading-tight">
-                        {items.text}
-                      </div>
-                      {/* post image */}
-                      {items?.postImage && (
-                        <div>
-                          <img
-                            className="rounded-xl"
-                            src={items.postImage}
-                            alt="img"
-                          />
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Icons Row */}
-                    <div className="flex items-center gap-2  mt-3 text-gray-500 max-w-md">
-                      {/* Comment */}
-                      <div className="flex items-center lg:gap-1 gap-0 group">
-                        <div
-                          onClick={() => {
-                            setExpandedPostId(
-                              expandedPostId == items.postId
-                                ? null
-                                : items.postId,
-                            );
-                          }}
-                          className="    group-hover:bg-blue-100/50 group-hover:text-blue-500 rounded-full transition-all"
-                        >
-                          <FaRegComment className="lg:text-[20px]" />
-                        </div>
-                        <span className="text-[13px] group-hover:text-blue-500">
-                          {items.comments.length}
-                        </span>
-                      </div>
-
-                      {/* Like */}
-                      <div className="flex items-center lg:gap-1 gap-0.5 group">
-                        <div
-                          onClick={() => handlePostLike(items.postId, isLiked)}
-                          className=" group-hover:bg-pink-100/50 group-hover:text-pink-500 rounded-full transition-all"
-                        >
-                          {isLiked ? (
-                            <AiFillHeart className="text-red-500 text-2xl" /> // Red heart
-                          ) : (
-                            <AiOutlineHeart className="text-2xl" /> // Khali heart
-                          )}
-                        </div>
-                        <span className="text-[13px] group-hover:text-pink-500">
-                          {items.like?.length || "0"}
-                        </span>
-                      </div>
-                    </div>
-                    {expandedPostId === items.postId && (
-                      <form
-                        onSubmit={(e) => handlePostComments(e, items.postId)}
-                        action=""
-                      >
-                        <div className="relative">
-                          <input
-                            onChange={(e) => setCommentText(e.target.value)}
-                            className=" border-gray-200 lg:px-7 lg:py-2 px-4 py-2 text-sm outline-0 rounded-full w-full"
-                            type="text"
-                            placeholder="Enter Your Comment"
-                            value={commentText}
-                          />
-                          {commentText && (
-                            <button
-                              className=" absolute lg:right-5 lg:top-2 right-5 top-3 text-white bg-blue-400 py-0 px-3 text-sm rounded-full cursor-pointer"
-                              type="submit"
-                            >
-                              comment
-                            </button>
-                          )}
-                        </div>
-                      </form>
-                    )}
-                    {expandedPostId === items.postId && (
-                      <div>
-                        <div className="mt-5">
-                          {items.comments
-                            .slice(0, visibleComments)
-                            .map((comment) => {
-                              return (
-                                <div
-                                  key={comment.commentId}
-                                  className="flex gap-3 group animate-fadeIn"
-                                >
-                                  {/* Commenter Avatar */}
-                                  <div className="h-8 w-8 rounded-full overflow-hidden flex-shrink-0 bg-gray-300">
-                                    <img
-                                      src={
-                                        comment.userProfilePic ||
-                                        "https://via.placeholder.com/150"
-                                      }
-                                      alt={comment.userName}
-                                      className="h-full w-full object-cover"
-                                    />
-                                  </div>
-
-                                  {/* Comment Content Bubble */}
-                                  <div className="flex-1 flex flex-col">
-                                    <div className="flex items-center gap-2">
-                                      <span className="font-bold text-[14px] hover:underline cursor-pointer">
-                                        {comment.userName}
-                                      </span>
-                                      <span className="text-gray-500 text-[12px]">
-                                        {new Date(
-                                          comment.createdAt,
-                                        ).toLocaleDateString()}
-                                      </span>
-                                    </div>
-                                    <p className="text-[14px] text-gray-800 mt-0.5 leading-relaxed">
-                                      {comment.text}
-                                    </p>
-
-                                    {/* Optional: Comment Actions (Like/Reply for comment) */}
-                                    <div className="flex items-center gap-4 mt-2 text-gray-500">
-                                      <button className="hover:text-pink-500 transition-colors">
-                                        <FaRegHeart className="text-[12px]" />
-                                      </button>
-                                      <button className="text-[12px] hover:underline">
-                                        Reply
-                                      </button>
-                                    </div>
-                                  </div>
-                                </div>
-                              );
-                            })}
-                        </div>
-                        {items.comments.length > visibleComments ? (
-                          <div className="pt-5">
-                            <button
-                              onClick={() =>
-                                setVisibleComments((prev) => prev + 3)
-                              }
-                              className="text-blue-500 text-sm font-bold mt-2 hover:underline cursor-pointer"
-                            >
-                              Show more comments...
-                            </button>
+                    {/* Right: Content Section */}
+                    <div className="flex flex-col w-full ">
+                      {/* Header: Name, Username, Time & More */}
+                      <div className="flex items-center justify-between w-full">
+                        <div className="flex items-center gap-3 flex-wrap">
+                          <div className="overflow-hidden h-10 w-10 rounded-full flex items-center justify-center bg-gray-300">
+                            {items.profilePic ? (
+                              <img src={items.profilePic} alt="" />
+                            ) : (
+                              <FaUser />
+                            )}
                           </div>
-                        ) : (
-                          <p className="text-gray-400 text-sm text-center py-2"></p>
+                          <div>
+                            <span
+                              onClick={() => navigate(`/profile/${items.uid}`)}
+                              className="font-bold lg:text-[15px] text-sm hover:underline flex items-center gap-0.5"
+                            >
+                              {items.firstName} {items.lastName}
+                              <MdVerified className="text-blue-500 text-[16px]" />
+                            </span>
+                            <span className="text-gray-500 lg:text-[15px] text-sm">
+                              @{items.firstName?.toLowerCase()}
+                            </span>
+                          </div>
+                          <span className="text-gray-500 lg:text-[15px] text-sm"></span>
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col gap-4">
+                        {/* Post Text */}
+                        <div className="lg:text-[15px] text-sm text-black mt-2 leading-tight">
+                          {items.text}
+                        </div>
+                        {/* post image */}
+                        {items?.postImage && (
+                          <div>
+                            <img
+                              className="rounded-xl"
+                              src={items.postImage}
+                              alt="img"
+                            />
+                          </div>
                         )}
                       </div>
-                    )}
+
+                      {/* Icons Row */}
+                      <div className="flex items-center gap-2  mt-4 text-gray-500 max-w-md">
+                        {/* Comment */}
+                        <div className="flex items-center lg:gap-1 gap-0 group">
+                          <div
+                            onClick={() => {
+                              setExpandedPostId(
+                                expandedPostId == items.postId
+                                  ? null
+                                  : items.postId,
+                              );
+                            }}
+                            className="    group-hover:bg-blue-100/50 group-hover:text-blue-500 rounded-full transition-all"
+                          >
+                            <FaRegComment className="lg:text-[20px]" />
+                          </div>
+                          <span className="text-[13px] group-hover:text-blue-500">
+                            {items.comments.length}
+                          </span>
+                        </div>
+
+                        {/* Like */}
+                        <div className="flex items-center lg:gap-1 gap-0.5 group">
+                          <div
+                            onClick={() =>
+                              handlePostLike(items.postId, isLiked)
+                            }
+                            className=" group-hover:bg-pink-100/50 group-hover:text-pink-500 rounded-full transition-all"
+                          >
+                            {isLiked ? (
+                              <AiFillHeart className="text-red-500 text-2xl" /> // Red heart
+                            ) : (
+                              <AiOutlineHeart className="text-2xl" /> // Khali heart
+                            )}
+                          </div>
+                          <span className="text-[13px] group-hover:text-pink-500">
+                            {items.like?.length || "0"}
+                          </span>
+                        </div>
+                      </div>
+                      {expandedPostId === items.postId && (
+                        <form
+                          onSubmit={(e) => handlePostComments(e, items.postId)}
+                          action=""
+                        >
+                          <div className="relative">
+                            <input
+                              onChange={(e) => setCommentText(e.target.value)}
+                              className=" border-gray-200 lg:px-7 lg:py-2 px-4 py-2 text-sm outline-0 rounded-full w-full"
+                              type="text"
+                              placeholder="Enter Your Comment"
+                              value={commentText}
+                            />
+                            {commentText && (
+                              <button
+                                className=" absolute lg:right-5 lg:top-2 right-5 top-3 text-white bg-blue-400 py-0 px-3 text-sm rounded-full cursor-pointer"
+                                type="submit"
+                              >
+                                comment
+                              </button>
+                            )}
+                          </div>
+                        </form>
+                      )}
+                      {expandedPostId === items.postId && (
+                        <div>
+                          <div className="mt-5">
+                            {items.comments
+                              .slice(0, visibleComments)
+                              .map((comment) => {
+                                return (
+                                  <div
+                                    key={comment.commentId}
+                                    className="flex gap-3 group animate-fadeIn"
+                                  >
+                                    {/* Commenter Avatar */}
+                                    <div className="h-8 w-8 rounded-full overflow-hidden flex-shrink-0 bg-gray-300">
+                                      <img
+                                        src={
+                                          comment.userProfilePic ||
+                                          "https://via.placeholder.com/150"
+                                        }
+                                        alt={comment.userName}
+                                        className="h-full w-full object-cover"
+                                      />
+                                    </div>
+
+                                    {/* Comment Content Bubble */}
+                                    <div className="flex-1 flex flex-col">
+                                      <div className="flex items-center gap-2">
+                                        <span className="font-bold text-[14px] hover:underline cursor-pointer">
+                                          {comment.userName}
+                                        </span>
+                                        <span className="text-gray-500 text-[12px]">
+                                          {new Date(
+                                            comment.createdAt,
+                                          ).toLocaleDateString()}
+                                        </span>
+                                      </div>
+                                      <p className="text-[14px] text-gray-800 mt-0.5 leading-relaxed">
+                                        {comment.text}
+                                      </p>
+
+                                      {/* Optional: Comment Actions (Like/Reply for comment) */}
+                                      <div className="flex items-center gap-4 mt-2 text-gray-500">
+                                        <button className="hover:text-pink-500 transition-colors">
+                                          <FaRegHeart className="text-[12px]" />
+                                        </button>
+                                        <button className="text-[12px] hover:underline">
+                                          Reply
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                          </div>
+                          {items.comments.length > visibleComments ? (
+                            <div className="pt-5">
+                              <button
+                                onClick={() =>
+                                  setVisibleComments((prev) => prev + 3)
+                                }
+                                className="text-blue-500 text-sm font-bold mt-2 hover:underline cursor-pointer"
+                              >
+                                Show more comments...
+                              </button>
+                            </div>
+                          ) : (
+                            <p className="text-gray-400 text-sm text-center py-2"></p>
+                          )}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </>
-            );
-          })}
-        </>
-      ) : (
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-          <span className="loading loading-spinner text-info"></span>
-        </div>
-      )}
+                </>
+              );
+            })}
+          </>
+        ) : (
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+            <span className="loading loading-spinner text-info"></span>
+          </div>
+        )}
+      </div>
     </>
   );
 };

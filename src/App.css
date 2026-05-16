@@ -8,13 +8,16 @@
   /* custom colors */
   --color-primary: #3b82f6;
   --color-secondary: #6366f1;
-  --color-bg: rgb(255, 255, 255);
+  --color-bg: #f5f5f5;
   --color-text: #0f172a;
   --color-error: #ff3333;
 }
+#root {
+  background-color: var(--color-bg);
+}
 body {
   font-family: var(--font-rabta);
-  background-color: var(--color-bg);
+
   color: var(--color-text);
   height: 100vh;
 }

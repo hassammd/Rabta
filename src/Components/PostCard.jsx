@@ -83,51 +83,52 @@ const PostCard = ({ currentUserPostsData }) => {
     <>
       <div
         key={currentUserPostsData.postId}
-        className="flex gap-3 px-3 py-6 border-b border-gray-200 hover:bg-gray-100/50 transition-colors cursor-pointer w-full"
+        className="flex gap-3 px-3 py-6 bg-white rounded-3xl transition-colors cursor-pointer w-full"
       >
-        {/* Left: Profile Image */}
-        <div className="flex-shrink-0">
-          <div className="overflow-hidden h-10 w-10 rounded-full flex  items-center justify-center bg-gray-300">
-            {currentUserPostsData.profilePic ? (
-              <img src={currentUserPostsData.profilePic} alt="" />
-            ) : (
-              <FaUser />
-            )}
-          </div>
-        </div>
-
         {/* Right: Content Section */}
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full gap-4">
           {/* Header: Name, Username, Time & More */}
-          <div className="flex  items-center justify-between w-full">
-            <div className="flex  items-center gap-1 flex-wrap">
-              <span className="font-bold lg:text-[15px] text-sm hover:underline flex  items-center gap-0.5">
-                {currentUserPostsData.firstName} {currentUserPostsData.lastName}
-                <MdVerified className="text-blue-500 text-[16px]" />
-              </span>
-              <span className="text-gray-500 lg:text-[15px] text-sm">
-                @{currentUserPostsData.firstName?.toLowerCase()}
-              </span>
+          <div className="flex justify-between items-center w-full">
+            <div className="flex  items-center gap-3 flex-wrap">
+              <div className="overflow-hidden h-10 w-10 rounded-full flex  items-center justify-center bg-gray-300">
+                {currentUserPostsData.profilePic ? (
+                  <img src={currentUserPostsData.profilePic} alt="" />
+                ) : (
+                  <FaUser />
+                )}
+              </div>
+              <div className="flex flex-col gap-0.5">
+                <span className="font-bold lg:text-[15px] text-sm hover:underline flex  items-center gap-0.5">
+                  {currentUserPostsData.firstName}{" "}
+                  {currentUserPostsData.lastName}
+                  <MdVerified className="text-blue-500 text-[16px]" />
+                </span>
+                <span className="text-gray-500 lg:text-[15px] text-sm">
+                  @{currentUserPostsData.firstName?.toLowerCase()}
+                </span>
+              </div>
               <span className="text-gray-500 text-[15px]"> </span>
             </div>
-            {currentUser && (
-              <div className="dropdown dropdown-end">
-                <div tabIndex={0} role="button" className="">
-                  <HiOutlineDotsHorizontal className="text-gray-500 hover:text-blue-500 transition-colors" />
+            <div>
+              {currentUser && (
+                <div className="dropdown dropdown-end">
+                  <div tabIndex={0} role="button" className="">
+                    <HiOutlineDotsHorizontal className="text-gray-500 hover:text-blue-500 transition-colors" />
+                  </div>
+                  <ul
+                    tabIndex="-1"
+                    className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
+                  >
+                    <li>
+                      <a>Edit</a>
+                    </li>
+                    <li onClick={() => deletePost(currentUserPostsData.postId)}>
+                      <a>Delete</a>
+                    </li>
+                  </ul>
                 </div>
-                <ul
-                  tabIndex="-1"
-                  className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
-                >
-                  <li>
-                    <a>Edit</a>
-                  </li>
-                  <li onClick={() => deletePost(currentUserPostsData.postId)}>
-                    <a>Delete</a>
-                  </li>
-                </ul>
-              </div>
-            )}
+              )}
+            </div>
           </div>
 
           <div className="flex flex-col gap-4">

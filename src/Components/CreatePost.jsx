@@ -127,10 +127,10 @@ const CreatePost = ({ currentUser }) => {
   return (
     <>
       {!param.uid && (
-        <div className="">
+        <div className="bg-white rounded-3xl">
           <form
             onSubmit={handlePost}
-            className="p-4 flex flex-col border-b-1 border-t-1 mt-5 border-gray-300"
+            className="p-4 flex flex-col mt-5 border-gray-300"
             action=""
           >
             <div className="flex">
