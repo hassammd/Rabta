@@ -193,7 +193,7 @@ const Home = () => {
                               <FaUser />
                             )}
                           </div>
-                          <div>
+                          <div className="flex flex-col gap-0">
                             <span
                               onClick={() => navigate(`/profile/${items.uid}`)}
                               className="font-bold lg:text-[15px] text-sm hover:underline flex items-center gap-0.5"
@@ -209,7 +209,7 @@ const Home = () => {
                         </div>
                       </div>
 
-                      <div className="flex flex-col gap-4">
+                      <div className="flex flex-col mt-6 gap-4">
                         {/* Post Text */}
                         <div className="lg:text-[15px] text-sm text-black mt-2 leading-tight">
                           {items.text}
@@ -271,7 +271,7 @@ const Home = () => {
                           onSubmit={(e) => handlePostComments(e, items.postId)}
                           action=""
                         >
-                          <div className="relative">
+                          <div className="relative pt-6">
                             <input
                               onChange={(e) => setCommentText(e.target.value)}
                               className=" border-gray-200 lg:px-7 lg:py-2 px-4 py-2 text-sm outline-0 rounded-full w-full"
