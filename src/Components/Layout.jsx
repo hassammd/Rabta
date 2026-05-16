@@ -50,7 +50,7 @@ const Layout = () => {
         </aside>
 
         {/* --- MAIN CENTER COLUMN (Mobile: Full Width, Desktop: Middle) --- */}
-        <main className="flex-1  overflow-y-auto no-scrollbar pb-20 md:pb-0 mb-7">
+        <main className="flex-1  overflow-y-auto no-scrollbar pb-20 md:pb-0 md:mb-7 mb-25">
           {/* Mobile-only Header (Optional: If not in Navbar) */}
           <div className="md:hidden sticky top-0  backdrop-blur-md p-4  z-10">
             <h1 className="font-black text-2xl text-black">Rabta</h1>
