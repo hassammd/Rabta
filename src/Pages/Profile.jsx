@@ -459,7 +459,7 @@ const Profile = () => {
           <div>
             <CreatePost currentUser={currentUser} />
           </div>
-          <div className="flex flex-col gap-7 mt-10">
+          <div className="flex flex-col gap-7 px-4 mt-10">
             {currentUserPosts?.map((post) => {
               return <PostCard param={param} currentUserPostsData={post} />;
             })}

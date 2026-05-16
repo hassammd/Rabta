@@ -166,7 +166,7 @@ const Home = () => {
         <span className="text-black font-semibold">For You</span>
       </div>
 
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-6 px-4">
         {!isFetching ? (
           <>
             {allUserPosts?.map((items) => {
@@ -229,7 +229,7 @@ const Home = () => {
                       {/* Icons Row */}
                       <div className="flex items-center gap-2  mt-4 text-gray-500 max-w-md">
                         {/* Comment */}
-                        <div className="flex items-center lg:gap-1 gap-0 group">
+                        <div className="flex items-center gap-1 group">
                           <div
                             onClick={() => {
                               setExpandedPostId(
